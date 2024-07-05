@@ -4,6 +4,7 @@
   background-color: rgba(0, 0, 0, 0.55);
 }
 .popupMenuActive {
+  z-index: 10;
   position: fixed;
   left: 0;
   top: 0;
@@ -15,6 +16,7 @@
 }
 
 .popupMenuDisabled {
+  z-index: 10;
   position: fixed;
   left: 0;
   top: 0;
@@ -28,8 +30,8 @@
 .nav {
   height: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
 }
 
 .li {

@@ -20,8 +20,9 @@ const ModelCard = ({ imgSrc, name, id }: ModelData) => {
         src={"/models/" + id + "/1.jpg"}
         alt={name}
         className={styles.modelcard_img}
-        width={100}
-        height={100}
+        width={1000}
+        height={1000}
+        loading="lazy"
       />
 
       <span className={styles.modelcard_name}>{name}</span>

@@ -34,7 +34,7 @@ export const PopupMenu = ({}) => {
           >
             Models
           </Link>
-          <Link
+          {/* <Link
             href={paths.form}
             className={styles.li}
             onClick={() => {
@@ -42,9 +42,13 @@ export const PopupMenu = ({}) => {
             }}
           >
             Become a model
-          </Link>
+          </Link> */}
 
-          <Link href="https://t.me/thedragonmm_bot" className={styles.li}>
+          <Link
+            href="https://t.me/thedragonmm_bot"
+            className={styles.li}
+            target="_blank"
+          >
             Casting to agency
           </Link>
         </nav>

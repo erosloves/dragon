@@ -14,9 +14,10 @@ export default async function handler(req, res) {
     switch (key) {
       case "selectAll":
         return "SELECT * from naruto_characters";
-        break;
       case "selectById":
         return "SELECT * from naruto_characters WHERE id = ?";
+      case "lastId":
+        return "SELECT MAX(id) as lastId from naruto_characters";
       default:
         break;
     }

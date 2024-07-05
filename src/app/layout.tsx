@@ -5,7 +5,6 @@ import { Inter } from "next/font/google";
 
 import { ToggleMenuProvider } from "@/contexts/ToggleMenu";
 import Header from "@/components/Header/Header";
-
 import { PopupMenu } from "@/components/PopupMenu/PopupMenu";
 
 // components end
@@ -28,7 +27,7 @@ export default function RootLayout({
           <ToggleMenuProvider>
             <Header />
             <PopupMenu />
-            <div className="children_wrapper">{children}</div>
+            {children}
           </ToggleMenuProvider>
         </div>
       </body>
