@@ -1,0 +1,122 @@
+[
+  {
+    "id": 0,
+    "imgSrc": "model.png",
+    "url": "/",
+    "name": "Sebastian Richter",
+    "height": 184,
+    "bust": 99,
+    "waist": 79,
+    "shoes": 43,
+    "eyes": "hazel",
+    "hair": "brown"
+  },
+  {
+    "id": 1,
+    "imgSrc": "model.png",
+    "url": "/",
+    "name": "Isabella Moretti",
+    "height": 175,
+    "bust": 85,
+    "waist": 60,
+    "shoes": 38,
+    "eyes": "blue",
+    "hair": "blonde"
+  },
+  {
+    "id": 2,
+    "imgSrc": "model.png",
+    "url": "/",
+    "name": "Sofia Rossi",
+    "height": 172,
+    "bust": 88,
+    "waist": 62,
+    "shoes": 39,
+    "eyes": "green",
+    "hair": "brown"
+  },
+  {
+    "id": 3,
+    "imgSrc": "model.png",
+    "url": "/",
+    "name": "Amelia Dupont",
+    "height": 178,
+    "bust": 90,
+    "waist": 64,
+    "shoes": 40,
+    "eyes": "brown",
+    "hair": "black"
+  },
+  {
+    "id": 4,
+    "imgSrc": "model.png",
+    "url": "/",
+    "name": "Emma Schneider",
+    "height": 171,
+    "bust": 83,
+    "waist": 59,
+    "shoes": 37,
+    "eyes": "gray",
+    "hair": "red"
+  },
+  {
+    "id": 5,
+    "imgSrc": "model.png",
+    "url": "/",
+    "name": "Charlotte Müller",
+    "height": 174,
+    "bust": 86,
+    "waist": 61,
+    "shoes": 39,
+    "eyes": "hazel",
+    "hair": "blonde"
+  },
+  {
+    "id": 6,
+    "imgSrc": "model.png",
+    "url": "/",
+    "name": "Lukas Jensen",
+    "height": 185,
+    "bust": 100,
+    "waist": 80,
+    "shoes": 43,
+    "eyes": "blue",
+    "hair": "brown"
+  },
+  {
+    "id": 7,
+    "imgSrc": "model.png",
+    "url": "/",
+    "name": "Mateo Garcia",
+    "height": 182,
+    "bust": 98,
+    "waist": 78,
+    "shoes": 44,
+    "eyes": "green",
+    "hair": "black"
+  },
+  {
+    "id": 8,
+    "imgSrc": "model.png",
+    "url": "/",
+    "name": "Lorenzo Bianchi",
+    "height": 188,
+    "bust": 102,
+    "waist": 82,
+    "shoes": 45,
+    "eyes": "brown",
+    "hair": "blonde"
+  },
+  {
+    "id": 9,
+    "imgSrc": "model.png",
+    "url": "/",
+    "name": "Nikolai Ivanov",
+    "height": 180,
+    "bust": 96,
+    "waist": 76,
+    "shoes": 42,
+    "eyes": "gray",
+    "hair": "red"
+  }
+]

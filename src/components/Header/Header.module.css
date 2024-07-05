@@ -1,0 +1,20 @@
+.header,
+.nav,
+.ul {
+  display: flex;
+  justify-content: center;
+}
+
+.header,
+.ul {
+  width: 100%;
+}
+.header {
+  /* border-bottom: 1px black solid; */
+  padding-bottom: 10px;
+  height: 50%;
+}
+.nav {
+  width: 50%;
+  margin: 0 auto;
+}

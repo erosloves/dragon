@@ -1,0 +1,8 @@
+.modelcard_wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background-color: rgba(175, 175, 175, 0.6);
+  grid-gap: 20px;
+  padding: 20px;
+  width: 100%;
+}
