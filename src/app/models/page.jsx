@@ -8,7 +8,7 @@ export default function Page() {
   const [dataResponse, setDataResponse] = useState([]);
   useEffect(() => {
     const getPageData = async () => {
-      const apiUrlEndpoint = `http://localhost:3000/api/getdata?type=selectAll`;
+      const apiUrlEndpoint = `/api/getdata?type=selectAll`;
       const req = await fetch(apiUrlEndpoint);
       const { results } = await req.json();
       console.log(results);

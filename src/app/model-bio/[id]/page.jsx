@@ -12,13 +12,13 @@ export default function Page({ params }) {
   const [slideImage, setSlideImage] = useState([]);
   useEffect(() => {
     const getModel = async () => {
-      const apiUrlEndpoint = `http://localhost:3000/api/getdata?type=selectById&id=${params.id}`;
+      const apiUrlEndpoint = `/api/getdata?type=selectById&id=${params.id}`;
       const req = await fetch(apiUrlEndpoint);
       const { results } = await req.json();
       setModelData(results[0]);
     };
     const getImage = async () => {
-      const apiUrlEndpoint = `http://localhost:3000/api/images?id=${params.id}`;
+      const apiUrlEndpoint = `/api/images?id=${params.id}`;
       const req = await fetch(apiUrlEndpoint);
       const { results } = await req.json();
       console.log(results);
