@@ -63,46 +63,61 @@ export default function Page({ params }) {
       animate={{ opacity: 1 }}
       className={styles.container}
     >
-      <Swiper
-        // install Swiper modules
+      <div className={styles.swiper}>
+        {dataIsLoaded && (
+          <AnimatePresence>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1.5 }}
+            >
+              <Swiper
+                // install Swiper modules
 
-        className={styles.swiper}
-        modules={[Pagination]}
-        spaceBetween={50}
-        slidesPerView={1}
-        pagination={{
-          clickable: true,
-          bulletActiveClass: styles.bulletActiveClass,
-          bulletClass: styles.bulletClass,
-        }}
-      >
-        {slideImage.map((img) => {
-          return (
-            <SwiperSlide key={img.toString()} className={styles.swiperSlide}>
-              <Image
-                src={img}
-                alt={img}
-                className={styles.img}
-                width={1000}
-                height={1000}
-                onLoad={() => setLoading(false)}
-              />
-              {isLoading && (
-                <Spin
-                  style={{
-                    position: "absolute",
-                    top: "45%",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    zIndex: 20,
-                  }}
-                  size="large"
-                />
-              )}
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
+                modules={[Pagination]}
+                spaceBetween={50}
+                slidesPerView={1}
+                pagination={{
+                  clickable: true,
+                  bulletActiveClass: styles.bulletActiveClass,
+                  bulletClass: styles.bulletClass,
+                }}
+              >
+                {slideImage.map((img) => {
+                  return (
+                    <SwiperSlide
+                      key={img.toString()}
+                      className={styles.swiperSlide}
+                    >
+                      <Image
+                        src={img}
+                        alt={img}
+                        className={styles.img}
+                        width={1000}
+                        height={1000}
+                        onLoad={() => setLoading(false)}
+                      />
+                      {isLoading && (
+                        <Spin
+                          style={{
+                            position: "absolute",
+                            top: "45%",
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            zIndex: 20,
+                          }}
+                          size="large"
+                        />
+                      )}
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
+            </motion.div>
+          </AnimatePresence>
+        )}
+      </div>
+
       <NavigationBetween
         currentId={Number(currentId)}
         setCurrentId={setCurrentId}
