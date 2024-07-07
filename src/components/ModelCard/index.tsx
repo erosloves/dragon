@@ -1,6 +1,8 @@
 import Image from "next/image";
 import styles from "./ModelCard.module.css";
+import { useState } from "react";
 import Link from "next/link";
+import { Spin } from "antd";
 interface ModelData {
   id: number;
   imgSrc: string;
@@ -14,6 +16,7 @@ interface ModelData {
   hair: string;
 }
 const ModelCard = ({ imgSrc, name, id }: ModelData) => {
+  const [isLoading, setLoading] = useState(true);
   return (
     <Link href={"/model-bio/" + id} className={styles.modelcard}>
       <Image
@@ -23,8 +26,20 @@ const ModelCard = ({ imgSrc, name, id }: ModelData) => {
         width={1000}
         height={1000}
         loading="lazy"
+        onLoad={() => setLoading(false)}
       />
-
+      {isLoading && (
+        <Spin
+          style={{
+            position: "absolute",
+            top: "45%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 20,
+          }}
+          size="large"
+        />
+      )}
       <span className={styles.modelcard_name}>{name}</span>
     </Link>
   );
