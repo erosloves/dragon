@@ -64,8 +64,8 @@ export default function Page({ params }) {
       className={styles.container}
     >
       <div className={styles.swiper}>
-        {dataIsLoaded && (
-          <AnimatePresence>
+        <AnimatePresence>
+          {dataIsLoaded && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -114,8 +114,8 @@ export default function Page({ params }) {
                 })}
               </Swiper>
             </motion.div>
-          </AnimatePresence>
-        )}
+          )}
+        </AnimatePresence>
       </div>
 
       <NavigationBetween
