@@ -35,7 +35,7 @@ const ModelCard = ({ imgSrc, name, id }: ModelData) => {
             top: "45%",
             left: "50%",
             transform: "translateX(-50%)",
-            zIndex: 20,
+            zIndex: 5,
           }}
           size="large"
         />
