@@ -1,7 +1,11 @@
+@import "./fonts.css";
 * {
+  font-family: "NeueHaasDisplayThin", sans-serif;
+
   box-sizing: border-box;
-  padding: 0;
   margin: 0;
+  padding: 0;
+
   color: black;
 }
 
@@ -12,17 +16,29 @@ body {
 
 .container {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  height: 100%;
+  flex-direction: column;
+
   width: 100%;
+  height: 100vh;
+}
+.homeContainer {
+  justify-content: center;
+
+  box-sizing: border-box;
+  padding: 0 10%;
+
+  background-color: #eee;
+
+  gap: 10px;
 }
 .children_wrapper {
-  width: 100%;
   /* height: 100%; */
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
+
+  width: 100%;
 }
 a {
   text-decoration: none;
@@ -35,6 +51,13 @@ li {
 h1 {
   display: flex;
   justify-content: center;
-  padding: 20vh 0 60vh;
+
   box-sizing: border-box;
+  padding: 20vh 0 60vh;
+}
+
+/*  antd */
+.ant-spin-dot-item {
+  color: rgb(255, 255, 255);
+  box-shadow: 0 0 5px 2px rgba(255, 255, 255, 1);
 }

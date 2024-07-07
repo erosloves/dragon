@@ -1,15 +1,33 @@
 "use client";
-import styles from "./page.module.css";
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
+import styles from "./page.module.css";
+import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { motion } from "framer-motion";
+import { Pagination } from "swiper/modules";
+import Image from "next/image";
+
+import NavigationBetween from "./NavigationBetween";
+import { Spin } from "antd";
+
+const variantsAnimateParams = {
+  hidden: {
+    opacity: 0,
+    y: 10,
+  },
+  visible: (custom) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: custom * 0.2 },
+  }),
+};
 
 export default function Page({ params }) {
   const [modelData, setModelData] = useState([]);
   const [slideImage, setSlideImage] = useState([]);
+  const [isLoading, setLoading] = useState(true);
   useEffect(() => {
     const getModel = async () => {
       const apiUrlEndpoint = `/api/getdata?type=selectById&id=${params.id}`;
@@ -21,18 +39,26 @@ export default function Page({ params }) {
       const apiUrlEndpoint = `/api/images?id=${params.id}`;
       const req = await fetch(apiUrlEndpoint);
       const { results } = await req.json();
-      console.log(results);
       setSlideImage(results);
     };
     getModel();
     getImage();
   }, [params.id]);
 
+  const handleImageLoad = () => setLoading(false);
+
+  const pathName = Number(Array.from(usePathname()).slice(11)[0]);
+  const [path, setPath] = useState(pathName);
   return (
-    <div className={styles.container}>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className={styles.container}
+    >
       <Swiper
         // install Swiper modules
-        style={{ width: "50%", height: "600px", margin: 0 }}
+
+        className={styles.swiper}
         modules={[Pagination]}
         spaceBetween={50}
         slidesPerView={1}
@@ -51,39 +77,87 @@ export default function Page({ params }) {
                 className={styles.img}
                 width={1000}
                 height={1000}
+                onLoad={handleImageLoad}
               />
+              {isLoading && (
+                <Spin
+                  style={{
+                    position: "absolute",
+                    top: "45%",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    zIndex: 20,
+                  }}
+                  size="large"
+                />
+              )}
             </SwiperSlide>
           );
         })}
       </Swiper>
-
-      <div className={styles.params}>
-        <h2 className="">{modelData.name}</h2>
-        <div className={styles.paramType}>
+      <NavigationBetween
+        path={path}
+        setPath={setPath}
+        h2value={modelData.name}
+      />
+      <motion.div initial="hidden" animate="visible" className={styles.params}>
+        <motion.h2
+          variants={variantsAnimateParams}
+          custom={1}
+          className={styles.paramType}
+        >
+          {modelData.name}
+        </motion.h2>
+        <motion.div
+          variants={variantsAnimateParams}
+          custom={2}
+          className={styles.paramType}
+        >
           height:
           <span className={styles.paramValue}> {modelData.height}</span>
-        </div>
-        <div className={styles.paramType}>
+        </motion.div>
+        <motion.div
+          variants={variantsAnimateParams}
+          custom={3}
+          className={styles.paramType}
+        >
           bust:
           <span className={styles.paramValue}> {modelData.bust}</span>
-        </div>
-        <div className={styles.paramType}>
+        </motion.div>
+        <motion.div
+          variants={variantsAnimateParams}
+          custom={4}
+          className={styles.paramType}
+        >
           waist:
           <span className={styles.paramValue}> {modelData.waist}</span>
-        </div>
-        <div className={styles.paramType}>
+        </motion.div>
+        <motion.div
+          variants={variantsAnimateParams}
+          custom={5}
+          className={styles.paramType}
+        >
           shoes:
           <span className={styles.paramValue}> {modelData.shoes}</span>
-        </div>
-        <div className={styles.paramType}>
+        </motion.div>
+        <motion.div
+          variants={variantsAnimateParams}
+          custom={6}
+          className={styles.paramType}
+        >
           eyes:
           <span className={styles.paramValue}> {modelData.eyes}</span>
-        </div>
-        <div className={styles.paramType}>
+        </motion.div>
+        <motion.div
+          variants={variantsAnimateParams}
+          custom={7}
+          className={styles.paramType}
+        >
           hair:
           <span className={styles.paramValue}> {modelData.hair}</span>
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      </motion.div>
+      {/* <Link href={""}>back</Link> */}
+    </motion.div>
   );
 }

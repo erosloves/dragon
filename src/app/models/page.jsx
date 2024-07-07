@@ -1,8 +1,22 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import styles from "./page.module.css";
-import ModelCard from "@/components/ModelCard/ModelCard";
+import ModelCard from "@/components/ModelCard";
+import { motion } from "framer-motion";
 // import json from "@p/models.json";
+
+const cardAnimation = {
+  hidden: {
+    x: -10,
+    opacity: 0,
+  },
+  visible: (custom) => ({
+    x: 0,
+    opacity: 1,
+    transition: { delay: custom * 0.2 },
+  }),
+};
+
 export default function Page() {
   // по умолчанию передаём пустой массив!
   const [dataResponse, setDataResponse] = useState([]);
@@ -11,27 +25,31 @@ export default function Page() {
       const apiUrlEndpoint = `/api/getdata?type=selectAll`;
       const req = await fetch(apiUrlEndpoint);
       const { results } = await req.json();
-      console.log(results);
       setDataResponse(results);
     };
 
     getPageData();
   }, []);
+  const scrollRef = useRef(null);
   return (
     <>
       <h1>MODELS</h1>
-      <div className={styles.modelcard_wrapper}>
-        {dataResponse.map((el) => {
+      <motion.div className={styles.modelcard_wrapper} ref={scrollRef}>
+        {dataResponse.map((el, i) => {
           return (
-            <ModelCard
+            <motion.div
               key={el.id}
-              id={el.id}
-              name={el.name}
-              imgSrc={el.id}
-            ></ModelCard>
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ amount: 0.2, once: true }}
+              variants={cardAnimation}
+              custom={i++}
+            >
+              <ModelCard id={el.id} name={el.name} imgSrc={el.id}></ModelCard>
+            </motion.div>
           );
         })}
-      </div>
+      </motion.div>
     </>
   );
 }

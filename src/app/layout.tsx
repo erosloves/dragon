@@ -6,8 +6,9 @@ import { Inter } from "next/font/google";
 import { ToggleMenuProvider } from "@/contexts/ToggleMenu";
 import Header from "@/components/Header/Header";
 import { PopupMenu } from "@/components/PopupMenu/PopupMenu";
-
+import Transition from "./template";
 // components end
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -25,8 +26,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="container">
           <ToggleMenuProvider>
-            <Header />
             <PopupMenu />
+            <Header />
             {children}
           </ToggleMenuProvider>
         </div>

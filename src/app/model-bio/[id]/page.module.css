@@ -1,32 +1,45 @@
-@import url("https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;700&display=swap");
 .params {
+  font-family: "NeueHaasDisplayRoman", sans-serif;
+  font-size: 25px;
   display: flex;
   flex-direction: column;
   width: 50%;
-  font-family: "Titillium Web", sans-serif;
-  font-size: 25px;
+}
+
+.paramType {
+  font-weight: 400;
+  display: flex;
+  flex-direction: row;
+}
+h2.paramType,
+.paramValue {
+  font-weight: 700;
 }
 
 .container {
   display: flex;
   justify-content: space-between;
   width: 80%;
-  gap: 20px;
   margin: 0 auto;
+  gap: 20px;
 }
 
-.paramValue {
-  font-weight: 700;
+.swiper {
+  width: 50%;
+  height: 600px;
+  margin: 0;
 }
 
 .swiperSlide {
-  background-color: cornsilk;
+  z-index: 10;
+  background-color: #333;
 }
 
 .img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* opacity: 0; */
 }
 
 .bulletActiveClass,
@@ -41,9 +54,40 @@
 
 .bulletActiveClass {
   background: rgb(255, 255, 255) !important;
-  box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, 1);
+  box-shadow: 0 0 5px 2px rgba(255, 255, 255, 1);
 }
 
 .bulletClass {
   background: rgb(0, 0, 0);
+}
+
+@media screen and (max-width: 960px) {
+  .container {
+    flex-direction: column;
+    /* align-items: center; */
+  }
+  .swiper {
+    width: 100%;
+  }
+  .params {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+  h2.paramType {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 30px;
+  }
+  .paramType:not(h2.paramType) {
+    margin: 0 5px;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  h2.paramType {
+    display: none;
+  }
 }
