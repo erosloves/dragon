@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 // components start
 
 import { ToggleMenuProvider } from "@/contexts/ToggleMenu";
+
 import Header from "@/components/Header/Header";
 import { PopupMenu } from "@/components/PopupMenu/PopupMenu";
 import Transition from "./template";

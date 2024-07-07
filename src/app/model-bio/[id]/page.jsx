@@ -2,14 +2,14 @@
 import "swiper/css";
 import "swiper/css/pagination";
 import styles from "./page.module.css";
-import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import { motion } from "framer-motion";
 import { Pagination } from "swiper/modules";
 import Image from "next/image";
 
-import NavigationBetween from "./NavigationBetween";
+import NavigationBetween from "@/components/NavigationBetween";
 import { Spin } from "antd";
 
 const variantsAnimateParams = {
@@ -28,6 +28,8 @@ export default function Page({ params }) {
   const [modelData, setModelData] = useState([]);
   const [slideImage, setSlideImage] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const [currentId, setCurrentId] = useState(params.id);
+  const [modelsCount, setCount] = useState(null);
   useEffect(() => {
     const getModel = async () => {
       const apiUrlEndpoint = `/api/getdata?type=selectById&id=${params.id}`;
@@ -41,14 +43,20 @@ export default function Page({ params }) {
       const { results } = await req.json();
       setSlideImage(results);
     };
+    const getPageData = async () => {
+      const apiUrlEndpoint = `/api/getdata?type=lastId`;
+      const req = await fetch(apiUrlEndpoint);
+      const { results } = await req.json();
+      setCount(results[0].lastId);
+    };
+
     getModel();
     getImage();
+    getPageData();
   }, [params.id]);
 
   const handleImageLoad = () => setLoading(false);
 
-  const pathName = Number(Array.from(usePathname()).slice(11)[0]);
-  const [path, setPath] = useState(pathName);
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -96,9 +104,10 @@ export default function Page({ params }) {
         })}
       </Swiper>
       <NavigationBetween
-        path={path}
-        setPath={setPath}
+        currentId={Number(currentId)}
+        setCurrentId={setCurrentId}
         h2value={modelData.name}
+        modelsCount={modelsCount}
       />
       <motion.div initial="hidden" animate="visible" className={styles.params}>
         <motion.h2

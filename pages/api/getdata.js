@@ -13,11 +13,11 @@ export default async function handler(req, res) {
   const computeQueryType = (key) => {
     switch (key) {
       case "selectAll":
-        return "SELECT * from naruto_characters";
+        return "SELECT * from models";
       case "selectById":
-        return "SELECT * from naruto_characters WHERE id = ?";
+        return "SELECT * from models WHERE id = ?";
       case "lastId":
-        return "SELECT MAX(id) as lastId from naruto_characters";
+        return "SELECT MAX(id) as lastId from models";
       default:
         break;
     }
