@@ -10,11 +10,35 @@
   width: 100%;
 }
 .header {
-  /* border-bottom: 1px black solid; */
-  padding-bottom: 10px;
-  /* height: 50%; */
+  /* position: absolute;
+  left: 0;
+  top: 0;
+
+  */
+  z-index: 5;
+  align-items: center;
+  background-color: #fff;
+  border-bottom: 1px #aaa solid;
+  height: 100px;
+  position: fixed;
+  overflow-y: hidden;
 }
 .nav {
   width: 50%;
   margin: 0 auto;
+}
+
+@media screen and (max-width: 430px) {
+  .header img {
+    width: 200px;
+    height: 66px;
+    object-fit: cover;
+  }
+}
+@media screen and (max-width: 350px) {
+  .header img {
+    width: 150px;
+    height: 50px;
+    object-fit: cover;
+  }
 }

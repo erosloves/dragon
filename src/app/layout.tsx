@@ -7,6 +7,7 @@ import { ToggleMenuProvider } from "@/contexts/ToggleMenu";
 
 import Header from "@/components/Header/Header";
 import { PopupMenu } from "@/components/PopupMenu/PopupMenu";
+import BurgerMenu from "@/components/BurgerMenu/BurgerMenu";
 import Transition from "./template";
 // components end
 
@@ -25,13 +26,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="container">
-          <ToggleMenuProvider>
-            <PopupMenu />
-            <Header />
-            {children}
-          </ToggleMenuProvider>
-        </div>
+        <ToggleMenuProvider>
+          <BurgerMenu />
+          <Header />
+          <PopupMenu />
+          <div className="container">{children}</div>
+        </ToggleMenuProvider>
       </body>
     </html>
   );

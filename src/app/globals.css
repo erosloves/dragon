@@ -20,20 +20,21 @@ body {
   flex-direction: column;
 
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 100px);
+  padding-top: 100px;
 }
-.homeContainer {
+
+section {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   justify-content: center;
 
-  box-sizing: border-box;
-  padding: 0 10%;
-
+  height: calc(100vh - 100px);
+  padding: 0 5%;
   background-color: #eee;
-
-  gap: 10px;
 }
 .children_wrapper {
-  /* height: 100%; */
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -50,10 +51,11 @@ li {
 
 h1 {
   display: flex;
+  align-items: center;
   justify-content: center;
-
+  font-size: 50px;
   box-sizing: border-box;
-  padding: 20vh 0 60vh;
+  height: calc(100vh - 100px);
 }
 
 /*  antd */

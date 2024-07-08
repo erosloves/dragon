@@ -16,6 +16,7 @@ const BurgerMenu: React.FC = () => {
         <span className={burgerOpen ? styles.span_active : styles.span}></span>
         <span className={burgerOpen ? styles.span_active : styles.span}></span>
         <span className={burgerOpen ? styles.span_active : styles.span}></span>
+        <span className={burgerOpen ? styles.span_active : styles.span}></span>
       </div>
       <Link href="https://www.instagram.com/thedragon__mm">
         <svg

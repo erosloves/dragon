@@ -1,31 +1,30 @@
 import React from "react";
 import Link from "next/link";
-import BurgerMenu from "../BurgerMenu/BurgerMenu";
+
 import styles from "./Header.module.css";
 import Image from "next/image";
 const Header = () => {
   return (
     <div className={styles.header}>
-      <BurgerMenu />
       <Link href={"/"}>
-        {/* <Image
+        <Image
           src={"/logo.gif"}
           alt=""
-          width={150}
+          width={300}
           height={100}
           style={{ objectFit: "cover" }}
-        /> */}
-        <div
+        />
+        {/* <div
           style={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            height: "100px",
+            height: "100%",
             fontSize: "30px",
           }}
         >
-          THE NORMAL AGENCY
-        </div>
+          THE DRAGON MM
+        </div> */}
       </Link>
     </div>
   );

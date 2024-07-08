@@ -3,7 +3,7 @@ export default function Home() {
   return (
     <>
       <h1>home</h1>
-      <div className="container homeContainer">
+      <section>
         <h2>Our story</h2>
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor, enim
@@ -29,7 +29,7 @@ export default function Home() {
           odit. Asperiores totam saepe cumque id perspiciatis voluptatibus
           numquam nemo fuga.
         </p>
-      </div>
+      </section>
     </>
   );
 }
