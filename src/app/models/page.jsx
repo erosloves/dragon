@@ -44,6 +44,7 @@ export default function Page() {
               viewport={{ amount: 0.2, once: true }}
               variants={cardAnimation}
               custom={i++}
+              style={{ width: "100%" }}
             >
               <ModelCard
                 id={el.id}

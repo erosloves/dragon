@@ -1,9 +1,17 @@
+.container {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  width: 80%;
+  margin: 0 auto;
+}
 .params {
   font-family: "NeueHaasDisplayRoman", sans-serif;
   font-size: 25px;
   display: flex;
-  flex-direction: column;
-  width: 50%;
+  gap: 10px;
+  justify-content: space-between;
+  padding: 20px 0;
 }
 
 .paramType {
@@ -11,21 +19,15 @@
   display: flex;
   flex-direction: row;
 }
-h2.paramType,
 .paramValue {
+  text-transform: lowercase;
+}
+h2.paramType {
   font-weight: 700;
+  font-size: inherit;
 }
 
-.container {
-  display: flex;
-  justify-content: space-between;
-  width: 80%;
-  margin: 0 auto;
-  padding-top: 110px;
-  gap: 20px;
-}
-
-.swiper {
+/* .swiper {
   width: 50%;
   height: 600px;
   margin: 0;
@@ -34,16 +36,24 @@ h2.paramType,
 .swiperSlide {
   height: 600px;
   background-color: #333;
+} */
+
+.imgContainer {
+  display: flex;
+  height: calc(100% - 170px);
+  width: 100%;
+
+  flex-wrap: wrap;
 }
 
 .img {
-  z-index: 10;
-  width: 100%;
+  /* z-index: 10; */
+  width: 50%;
   height: 100%;
   object-fit: cover;
 }
 
-.bulletActiveClass,
+/* .bulletActiveClass,
 .bulletClass {
   display: inline-block;
   width: 10px;
@@ -60,7 +70,7 @@ h2.paramType,
 
 .bulletClass {
   background: rgb(0, 0, 0);
-}
+} */
 
 @media screen and (max-width: 960px) {
   .container {

@@ -63,7 +63,94 @@ export default function Page({ params }) {
       animate={{ opacity: 1 }}
       className={styles.container}
     >
-      <div className={styles.swiper}>
+      <NavigationBetween
+        currentId={Number(currentId)}
+        setCurrentId={setCurrentId}
+        h2value={modelData.name}
+        modelsCount={modelsCount}
+      />
+      <AnimatePresence>
+        {dataIsLoaded && (
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            className={styles.params}
+          >
+            <motion.h2
+              variants={variantsAnimateParams}
+              custom={1}
+              className={styles.paramType}
+            >
+              {modelData.name}
+            </motion.h2>
+            <motion.div
+              variants={variantsAnimateParams}
+              custom={2}
+              className={styles.paramType}
+            >
+              height:
+              <span className={styles.paramValue}>
+                &nbsp;{modelData.height}cm
+              </span>
+            </motion.div>
+            <motion.div
+              variants={variantsAnimateParams}
+              custom={3}
+              className={styles.paramType}
+            >
+              bust:
+              <span className={styles.paramValue}>
+                &nbsp;{modelData.bust}cm
+              </span>
+            </motion.div>
+            <motion.div
+              variants={variantsAnimateParams}
+              custom={4}
+              className={styles.paramType}
+            >
+              waist:
+              <span className={styles.paramValue}>
+                &nbsp;{modelData.waist}cm
+              </span>
+            </motion.div>
+            <motion.div
+              variants={variantsAnimateParams}
+              custom={5}
+              className={styles.paramType}
+            >
+              hip:
+              <span className={styles.paramValue}>&nbsp;{modelData.hip}cm</span>
+            </motion.div>
+            <motion.div
+              variants={variantsAnimateParams}
+              custom={6}
+              className={styles.paramType}
+            >
+              shoes:
+              <span className={styles.paramValue}>
+                &nbsp;{modelData.shoes}eu
+              </span>
+            </motion.div>
+            <motion.div
+              variants={variantsAnimateParams}
+              custom={7}
+              className={styles.paramType}
+            >
+              eyes:
+              <span className={styles.paramValue}>&nbsp;{modelData.eyes}</span>
+            </motion.div>
+            <motion.div
+              variants={variantsAnimateParams}
+              custom={8}
+              className={styles.paramType}
+            >
+              hair:
+              <span className={styles.paramValue}>&nbsp;{modelData.hair}</span>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {/* <div className={styles.swiper}>
         <AnimatePresence>
           {dataIsLoaded && (
             <motion.div
@@ -117,75 +204,13 @@ export default function Page({ params }) {
             </motion.div>
           )}
         </AnimatePresence>
+      </div> */}
+      <div className={styles.imgContainer}>
+        {dataIsLoaded &&
+          slideImage.map((img) => {
+            return <img key={img} src={img} alt={img} className={styles.img} />;
+          })}
       </div>
-
-      <NavigationBetween
-        currentId={Number(currentId)}
-        setCurrentId={setCurrentId}
-        h2value={modelData.name}
-        modelsCount={modelsCount}
-      />
-      <motion.div initial="hidden" animate="visible" className={styles.params}>
-        {dataIsLoaded && (
-          <AnimatePresence>
-            <motion.h2
-              variants={variantsAnimateParams}
-              custom={1}
-              className={styles.paramType}
-            >
-              {modelData.name}
-            </motion.h2>
-            <motion.div
-              variants={variantsAnimateParams}
-              custom={2}
-              className={styles.paramType}
-            >
-              height:
-              <span className={styles.paramValue}> {modelData.height}</span>
-            </motion.div>
-            <motion.div
-              variants={variantsAnimateParams}
-              custom={3}
-              className={styles.paramType}
-            >
-              bust:
-              <span className={styles.paramValue}> {modelData.bust}</span>
-            </motion.div>
-            <motion.div
-              variants={variantsAnimateParams}
-              custom={4}
-              className={styles.paramType}
-            >
-              waist:
-              <span className={styles.paramValue}> {modelData.waist}</span>
-            </motion.div>
-            <motion.div
-              variants={variantsAnimateParams}
-              custom={5}
-              className={styles.paramType}
-            >
-              shoes:
-              <span className={styles.paramValue}> {modelData.shoes}</span>
-            </motion.div>
-            <motion.div
-              variants={variantsAnimateParams}
-              custom={6}
-              className={styles.paramType}
-            >
-              eyes:
-              <span className={styles.paramValue}> {modelData.eyes}</span>
-            </motion.div>
-            <motion.div
-              variants={variantsAnimateParams}
-              custom={7}
-              className={styles.paramType}
-            >
-              hair:
-              <span className={styles.paramValue}> {modelData.hair}</span>
-            </motion.div>
-          </AnimatePresence>
-        )}
-      </motion.div>
     </motion.div>
   );
 }

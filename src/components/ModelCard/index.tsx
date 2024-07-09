@@ -20,10 +20,10 @@ const ModelCard = ({ imgSrc, name, id }: ModelData) => {
   return (
     <Link href={"/model-bio/" + id} className={styles.modelcard}>
       <Image
-        src={"/models/" + id + "/1.jpg"}
+        src={"/models/" + id + "/211.jpg"}
         alt={name}
         className={styles.modelcard_img}
-        width={1000}
+        width={isLoading ? 0 : 1000}
         height={1000}
         loading="lazy"
         onLoad={() => setLoading(false)}
