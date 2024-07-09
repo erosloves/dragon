@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import Layout from "./layout";
 import Link from "next/link";
-import AdminMaBtn from "@/components/AdminMaBtn";
+import { AdminMaBtn } from "@/components/AdminMaBtn";
 import Notification from "@/components/Notification/Notification";
 import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";

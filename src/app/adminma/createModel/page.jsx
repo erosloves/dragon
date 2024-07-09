@@ -1,7 +1,7 @@
 "use client";
 import style from "./page.module.css";
 import { useRef, useState, useEffect } from "react";
-import AdminMaBtn from "@/components/AdminMaBtn";
+import { AdminMaBtn, NavBtn } from "@/components/AdminMaBtn";
 export default function CreateModel() {
   const [name, setName] = useState("");
   const [height, setHeight] = useState("");
@@ -104,6 +104,7 @@ export default function CreateModel() {
   return (
     <div className={style.datawrapper}>
       <AdminMaBtn isLogged={true} />
+      <NavBtn />
       <form className={style.inputwrapper} onSubmit={handleSubmit}>
         <input
           onChange={(e) => setName(e.target.value)}
