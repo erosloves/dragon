@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 // components start
 
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { ToggleMenuProvider } from "@/contexts/ToggleMenu";
 
 import Header from "@/components/Header/Header";
@@ -26,12 +27,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ToggleMenuProvider>
-          <BurgerMenu />
-          <Header />
-          <PopupMenu />
-          <div className="container">{children}</div>
-        </ToggleMenuProvider>
+        <UserProvider>
+          <ToggleMenuProvider>
+            <BurgerMenu />
+            <Header />
+            <PopupMenu />
+            <div className="container">{children}</div>
+          </ToggleMenuProvider>
+        </UserProvider>
       </body>
     </html>
   );

@@ -1,6 +1,7 @@
+import Link from "next/link";
 export function AdminMaBtn({ isLogged }) {
   return (
-    <a
+    <Link
       href={isLogged ? "/api/auth/logout" : "/api/auth/login"}
       style={{
         position: "absolute",
@@ -17,12 +18,12 @@ export function AdminMaBtn({ isLogged }) {
       }}
     >
       {isLogged ? "Logout" : "Login"}
-    </a>
+    </Link>
   );
 }
-export function NavBtn({ isLogged }) {
+export function NavBtn() {
   return (
-    <a
+    <Link
       href={"/adminma"}
       style={{
         position: "absolute",
@@ -39,6 +40,6 @@ export function NavBtn({ isLogged }) {
       }}
     >
       Go back
-    </a>
+    </Link>
   );
 }
