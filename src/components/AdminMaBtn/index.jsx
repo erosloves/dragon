@@ -2,7 +2,7 @@ import Link from "next/link";
 export function AdminMaBtn({ isLogged }) {
   return (
     <Link
-      href={isLogged ? "/api/auth/logout" : "/api/auth/login"}
+      href={isLogged ? "/api/auth/logout" : "/api/auth/login?returnTo=/adminma"}
       style={{
         position: "absolute",
         right: "20px",

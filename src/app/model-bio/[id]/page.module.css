@@ -1,17 +1,17 @@
 .container {
   display: flex;
-  height: 100%;
   flex-direction: column;
-  width: 80%;
+  width: 90%;
+  height: 100%;
   margin: 0 auto;
 }
 .params {
   font-family: "NeueHaasDisplayRoman", sans-serif;
   font-size: 25px;
   display: flex;
-  gap: 10px;
   justify-content: space-between;
   padding: 20px 0;
+  gap: 10px;
 }
 
 .paramType {
@@ -23,8 +23,8 @@
   text-transform: lowercase;
 }
 h2.paramType {
-  font-weight: 700;
   font-size: inherit;
+  font-weight: 700;
 }
 
 /* .swiper {
@@ -40,14 +40,14 @@ h2.paramType {
 
 .imgContainer {
   display: flex;
-  height: calc(100% - 170px);
-  width: 100%;
+  flex-shrink: 0;
+  overflow: hidden;
 
-  flex-wrap: wrap;
+  width: 100%;
+  height: calc(100vh - 170px);
 }
 
 .img {
-  /* z-index: 10; */
   width: 50%;
   height: 100%;
   object-fit: cover;

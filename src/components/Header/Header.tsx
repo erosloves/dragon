@@ -7,13 +7,6 @@ const Header = () => {
   return (
     <div className={styles.header}>
       <Link href={"/"}>
-        {/* <Image
-          src={"/logo.gif"}
-          alt=""
-          width={300}
-          height={100}
-          style={{ objectFit: "cover" }}
-        /> */}
         <div
           style={{
             display: "flex",
@@ -23,7 +16,7 @@ const Header = () => {
             fontSize: "30px",
             fontFamily: "NeueHaasDisplayThin",
             fontWeight: "lighter",
-            letterSpacing: "10px",
+            letterSpacing: "8px",
           }}
         >
           The Dragon Model Management

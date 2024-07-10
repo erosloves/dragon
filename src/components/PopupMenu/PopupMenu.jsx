@@ -10,54 +10,52 @@ export const PopupMenu = ({}) => {
   const toggle = useContext(ToggleMenuContext);
   const { toggleMenuVisible } = useToggleMenuContext();
   return (
-    <div className={styles.popupLayout}>
-      <AnimatePresence>
-        {toggle.isMenuVisible && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+    <AnimatePresence>
+      {toggle.isMenuVisible && (
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -50 }}
+          transition={{ duration: 0.5 }}
+          className={styles.popupWrapper}
+        >
+          <Link
+            href={paths.home}
+            className={styles.li}
+            onClick={() => {
+              toggleMenuVisible();
+            }}
           >
-            <div className={styles.popupWrapper}>
-              <Link
-                href={paths.home}
-                className={styles.li}
-                onClick={() => {
-                  toggleMenuVisible();
-                }}
-              >
-                Home
-              </Link>
-              <Link
-                href={paths.models}
-                className={styles.li}
-                onClick={() => {
-                  toggleMenuVisible();
-                }}
-              >
-                Models
-              </Link>
-              <Link
-                href={paths.contacts}
-                className={styles.li}
-                onClick={() => {
-                  toggleMenuVisible();
-                }}
-              >
-                Contacts
-              </Link>
+            Home
+          </Link>
+          <Link
+            href={paths.models}
+            className={styles.li}
+            onClick={() => {
+              toggleMenuVisible();
+            }}
+          >
+            Models
+          </Link>
+          <Link
+            href={paths.contacts}
+            className={styles.li}
+            onClick={() => {
+              toggleMenuVisible();
+            }}
+          >
+            Contacts
+          </Link>
 
-              <Link
-                href="https://t.me/thedragonmm_bot"
-                className={styles.li}
-                target="_blank"
-              >
-                Casting
-              </Link>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+          <Link
+            href="https://t.me/thedragonmm_bot"
+            className={styles.li}
+            target="_blank"
+          >
+            Casting
+          </Link>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
