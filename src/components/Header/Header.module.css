@@ -40,9 +40,8 @@
   scale: 1.02;
 }
 
-.nav {
-  width: 50%;
-  margin: 0 auto;
+.header img {
+  width: 300px;
 }
 
 @media screen and (max-width: 430px) {

@@ -19,7 +19,7 @@ export const PopupMenu = ({}) => {
           transition={{ duration: 0.5 }}
           className={styles.popupWrapper}
         >
-          <Link
+          {/* <Link
             href={paths.home}
             className={styles.li}
             onClick={() => {
@@ -27,7 +27,7 @@ export const PopupMenu = ({}) => {
             }}
           >
             Home
-          </Link>
+          </Link> */}
           <Link
             href={paths.models}
             className={styles.li}
@@ -52,7 +52,8 @@ export const PopupMenu = ({}) => {
             className={styles.li}
             target="_blank"
           >
-            Casting
+            {/* Casting */}
+            Become a model
           </Link>
         </motion.div>
       )}

@@ -1,7 +1,8 @@
 "use client";
 import styles from "./page.module.css";
 
-import { useEffect, useState } from "react";
+import { ToggleMenuContext } from "@/contexts/ToggleMenu";
+import { useContext, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { Spin } from "antd";
@@ -188,6 +189,7 @@ const VerticalSplitScreen = ({
   slideImageLength,
 }) => {
   const [isLeftSide, setIsLeftSide] = useState(true);
+  const { isMenuVisible } = useContext(ToggleMenuContext);
   useEffect(() => {
     const handleMouseMove = (e) => {
       const screenWidth = window.innerWidth;
@@ -216,25 +218,18 @@ const VerticalSplitScreen = ({
     } else if (slideCount < slideImageLength - 2) setSlideCount(slideCount + 2);
   };
   return (
-    <div
-      style={{
-        position: "fixed",
-        left: 0,
-        top: "100px",
-        width: "100%",
-        height: "calc(100vh - 100px)",
-        // backgroundColor: "#aa999945",
-        cursor: "none",
-      }}
-      onClick={() => chacngeSlide()}
-    >
-      <CustomCursor isLeftSide={isLeftSide} />
+    <div onClick={() => chacngeSlide()} className={styles.VerticalSplitScreen}>
+      <CustomCursor
+        isLeftSide={isLeftSide}
+        slideCount={slideCount}
+        slideImageLength={slideImageLength}
+      />
       {children}
     </div>
   );
 };
 
-const CustomCursor = ({ isLeftSide }) => {
+const CustomCursor = ({ isLeftSide, slideCount, slideImageLength }) => {
   useEffect(() => {
     const cursor = document.getElementById("custom-cursor");
 
@@ -249,6 +244,28 @@ const CustomCursor = ({ isLeftSide }) => {
       document.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
+  const polylineStroke = () => {
+    if (isLeftSide) {
+      if (slideCount == 0) {
+        return "#9d9d9d6b";
+      } else return "#444444d3";
+    } else if (!isLeftSide) {
+      if (slideCount < slideImageLength - 2) {
+        return "#444444d3";
+      } else return "#9d9d9d6b";
+    }
+  };
+  const circletroke = () => {
+    if (isLeftSide) {
+      if (slideCount == 0) {
+        return "#9d9d9d6b";
+      } else return "#444444d3";
+    } else if (!isLeftSide) {
+      if (slideCount < slideImageLength - 2) {
+        return "#444444d3";
+      } else return "#9d9d9d6b";
+    }
+  };
 
   return (
     <>
@@ -258,14 +275,14 @@ const CustomCursor = ({ isLeftSide }) => {
             cx="25"
             cy="25"
             r="24"
-            stroke="#5c5c5cd4"
-            stroke-width="1"
+            stroke={circletroke()}
+            stroke-width="2"
             fill="#9d9d9d6b"
           />
 
           <polyline
             points="30,15 20,25 30,35"
-            stroke="black"
+            stroke={polylineStroke()}
             stroke-width="2"
             fill="none"
             transform={isLeftSide ? 0 : "translate(50, 0) scale(-1, 1)"}

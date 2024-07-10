@@ -5,7 +5,7 @@
   align-items: center;
   flex-direction: column;
   justify-content: space-between;
-  height: calc(100vh - 110px);
+  height: calc(50vh);
   border-radius: 20px;
 
   padding: 20px;
