@@ -1,21 +1,9 @@
 import multer from "multer";
+import sharp from "sharp";
 import path from "path";
 import fs from "fs";
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const { id } = req.query;
-    const dirPath = path.join(process.cwd(), `/public/models`, id);
-    if (() => !fs.stat(dirPath)) {
-      fs.mkdirSync(dirPath, { recursive: true });
-    }
-    cb(null, `public/models/${id}`);
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
-
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 export const config = {
@@ -24,19 +12,52 @@ export const config = {
   },
 };
 
-const uploadMiddleware = upload.array("files", 20);
+const handler = async (req, res) => {
+  if (req.method === "POST") {
+    try {
+      await new Promise((resolve, reject) => {
+        upload.array("files")(req, res, (err) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve();
+        });
+      });
+      const { id } = req.query;
+      const files = req.files;
+      const uploadDir = path.join(process.cwd(), `public/models/${id}`);
 
-export default function handler(req, res) {
-  return new Promise((resolve, reject) => {
-    uploadMiddleware(req, res, (err) => {
-      if (err) {
-        res.status(500).json({ error: `Something went wrong: ${err.message}` });
-        return reject(err);
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
       }
 
-      res.status(200).json("success");
+      await Promise.all(
+        files.map(async (file) => {
+          const { buffer, originalname } = file;
+          const webpImage = await sharp(buffer)
+            .toFormat("jpg", { quality: 80 })
+            .toBuffer();
 
-      return resolve();
-    });
-  });
-}
+          const filePath = path.join(
+            uploadDir,
+            originalname.replace(/\.\w+$/, ".jpg")
+          );
+          await fs.promises.writeFile(filePath, webpImage);
+        })
+      );
+
+      res
+        .status(200)
+        .json({ message: "Images uploaded and compressed successfully" });
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .json({ message: "Something went wrong", error: error.message });
+    }
+  } else {
+    res.status(405).json({ message: "Method not allowed" });
+  }
+};
+
+export default handler;

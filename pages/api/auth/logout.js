@@ -1,11 +1,12 @@
+// pages/api/auth/logout.js
 import { handleLogout } from "@auth0/nextjs-auth0";
 
-export default async function logut(req, res) {
+export default async function logout(req, res) {
   try {
     await handleLogout(req, res, {
-      returnTo: req.query.returnTo || "/adminma",
+      returnTo: req.query.returnTo || "/models",
     });
-  } catch (e) {
-    res.status(e.status || 400).end(error.message);
+  } catch (error) {
+    res.status(error.status || 400).end(error.message);
   }
 }

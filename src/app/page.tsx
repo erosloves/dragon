@@ -1,8 +1,9 @@
+"use client";
 import Transition from "./template";
+
 export default function Home() {
   return (
     <>
-      <h1>home</h1>
       <section>
         <h2>Our story</h2>
         <p>

@@ -32,6 +32,7 @@ section {
 
   height: calc(100vh - 100px);
   padding: 0 5%;
+
   background-color: #eee;
 }
 .children_wrapper {
@@ -49,24 +50,54 @@ li {
   list-style: none;
 }
 
-h1 {
+/* h1 {
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 50px;
   box-sizing: border-box;
   height: calc(100vh - 100px);
+} */
+
+h1 {
+  position: absolute;
+  z-index: 99;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100vw;
+  height: 100px;
+
+  color: black;
+  background: #eee;
 }
 
 /*  antd */
 .ant-spin-dot-item {
   color: rgb(255, 255, 255);
-  box-shadow: 0 0 5px 2px rgba(255, 255, 255, 1);
+  box-shadow: 0 0 5px 2px rgb(21, 21, 21);
 }
 
 #custom-cursor {
   position: fixed;
-  pointer-events: none;
+  z-index: 9999; /* Поверх всех элементов */
+
   transform: translate(-50%, -50%);
-  z-index: 99; /* Поверх всех элементов */
+  pointer-events: none;
+}
+
+/* off scrollbar */
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0; /* Устанавливаем ширину полосы прокрутки в 0 для WebKit-браузеров */
+  height: 0;
+}
+
+html,
+body {
+  -ms-overflow-style: none; /* Скрываем полосу прокрутки в IE и Edge */
+  scrollbar-width: none; /* Скрываем полосу прокрутки в Firefox */
 }

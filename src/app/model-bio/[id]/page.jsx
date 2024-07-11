@@ -4,7 +4,6 @@ import styles from "./page.module.css";
 import { ToggleMenuContext } from "@/contexts/ToggleMenu";
 import { useContext, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-
 import { Spin } from "antd";
 
 const variantsAnimateParams = {
@@ -22,12 +21,11 @@ const variantsAnimateParams = {
 export default function Page({ params }) {
   const [modelData, setModelData] = useState([]);
   const [slideImage, setSlideImage] = useState([]);
-  const [currentId, setCurrentId] = useState(params.id);
   const [isLoading, setLoading] = useState(true);
   const [dataIsLoaded, setDataIsLoaded] = useState(false);
-  const [modelsCount, setCount] = useState(null);
+
   const [slideCount, setSlideCount] = useState(0);
-  const [slidesToMap, setSlidesToMap] = useState(slideImage);
+  const [slidesToRender, setSlidesToRender] = useState(slideImage);
 
   useEffect(() => {
     const getModel = async () => {
@@ -43,20 +41,12 @@ export default function Page({ params }) {
       const { results } = await req.json();
       setSlideImage(results);
     };
-    const getPageData = async () => {
-      const apiUrlEndpoint = `/api/getdata?type=lastId`;
-      const req = await fetch(apiUrlEndpoint);
-      const { results } = await req.json();
-      setCount(results[0].lastId);
-    };
-
     getModel();
     getImage();
-    getPageData();
   }, [params.id]);
 
   useEffect(() => {
-    setSlidesToMap(slideImage.slice(slideCount));
+    setSlidesToRender(slideImage.slice(slideCount, slideCount + 2));
   }, [slideCount, slideImage]);
 
   return (
@@ -158,25 +148,25 @@ export default function Page({ params }) {
           )}
         </AnimatePresence>
 
-        <div className={styles.imgContainer}>
-          {dataIsLoaded && (
-            <AnimatePresence mode="wait">
-              {slidesToMap.map((img) => {
-                return (
-                  <motion.img
-                    key={img}
-                    className={styles.img}
-                    src={img}
-                    alt={img}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.7 }}
-                  />
-                );
-              })}
-            </AnimatePresence>
-          )}
-        </div>
+        <AnimatePresence mode="wait">
+          <div className={styles.imgContainer}>
+            {slidesToRender.map((img) => {
+              return (
+                <motion.img
+                  key={img}
+                  src={img}
+                  alt={img}
+                  className={styles.img}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.7 }}
+                  onLoad={() => setLoading(false)}
+                  loading="lazy"
+                />
+              );
+            })}
+          </div>
+        </AnimatePresence>
       </motion.div>
     </VerticalSplitScreen>
   );
@@ -189,7 +179,7 @@ const VerticalSplitScreen = ({
   slideImageLength,
 }) => {
   const [isLeftSide, setIsLeftSide] = useState(true);
-  const { isMenuVisible } = useContext(ToggleMenuContext);
+
   useEffect(() => {
     const handleMouseMove = (e) => {
       const screenWidth = window.innerWidth;
@@ -215,7 +205,9 @@ const VerticalSplitScreen = ({
   const chacngeSlide = () => {
     if (isLeftSide) {
       if (slideCount > 0) setSlideCount(slideCount - 2);
-    } else if (slideCount < slideImageLength - 2) setSlideCount(slideCount + 2);
+    } else if (!isLeftSide) {
+      if (slideCount < slideImageLength - 2) setSlideCount(slideCount + 2);
+    }
   };
   return (
     <div onClick={() => chacngeSlide()} className={styles.VerticalSplitScreen}>
@@ -237,7 +229,6 @@ const CustomCursor = ({ isLeftSide, slideCount, slideImageLength }) => {
       cursor.style.left = `${event.clientX}px`;
       cursor.style.top = `${event.clientY}px`;
     };
-    console.log(cursor.style.left);
     document.addEventListener("mousemove", handleMouseMove);
 
     return () => {
@@ -270,22 +261,26 @@ const CustomCursor = ({ isLeftSide, slideCount, slideImageLength }) => {
   return (
     <>
       <div id="custom-cursor">
-        <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          width="50"
+          height="50"
+          xmlns="http://www.w3.org/2000/svg"
+          transform={isLeftSide ? "scale(1, 1)" : " scale(-1, 1)"}
+        >
           <circle
             cx="25"
             cy="25"
             r="24"
             stroke={circletroke()}
-            stroke-width="2"
+            strokeWidth="2"
             fill="#9d9d9d6b"
           />
 
           <polyline
             points="30,15 20,25 30,35"
             stroke={polylineStroke()}
-            stroke-width="2"
+            strokeWidth="2"
             fill="none"
-            transform={isLeftSide ? 0 : "translate(50, 0) scale(-1, 1)"}
           />
         </svg>
       </div>

@@ -9,7 +9,7 @@ import { ToggleMenuProvider } from "@/contexts/ToggleMenu";
 import Header from "@/components/Header/Header";
 import { PopupMenu } from "@/components/PopupMenu/PopupMenu";
 import BurgerMenu from "@/components/BurgerMenu/BurgerMenu";
-import Transition from "./template";
+
 // components end
 
 const inter = Inter({ subsets: ["latin"] });

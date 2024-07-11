@@ -1,9 +1,10 @@
+"use client";
 import Link from "next/link";
 import css from "./page.module.css";
+
 function Contacts() {
   return (
     <>
-      <h1>Contacts</h1>
       <section>
         <div className={css.itemsCollection}>
           <div className={css.contactItem}>

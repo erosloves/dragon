@@ -19,15 +19,16 @@ const ModelCard = ({ imgSrc, name, id }: ModelData) => {
   const [isLoading, setLoading] = useState(true);
   return (
     <Link href={"/model-bio/" + id} className={styles.modelcard}>
-      <Image
-        src={"/models/" + id + "/main.jpg"}
-        alt={name}
-        className={styles.modelcard_img}
-        width={isLoading ? 0 : 1000}
-        height={1000}
-        loading="lazy"
-        onLoad={() => setLoading(false)}
-      />
+      <figure className={styles.modelcard_img}>
+        <Image
+          src={"/models/" + id + "/main.jpg"}
+          alt={name}
+          width={isLoading ? 0 : 1000}
+          height={1000}
+          loading="lazy"
+          onLoad={() => setLoading(false)}
+        />
+      </figure>
       {isLoading && (
         <Spin
           style={{
