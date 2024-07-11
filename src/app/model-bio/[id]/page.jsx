@@ -239,10 +239,10 @@ const CustomCursor = ({ isLeftSide, slideCount, slideImageLength }) => {
     if (isLeftSide) {
       if (slideCount == 0) {
         return "#9d9d9d6b";
-      } else return "#444444d3";
+      } else return "#111";
     } else if (!isLeftSide) {
       if (slideCount < slideImageLength - 2) {
-        return "#444444d3";
+        return "#111";
       } else return "#9d9d9d6b";
     }
   };
@@ -250,10 +250,10 @@ const CustomCursor = ({ isLeftSide, slideCount, slideImageLength }) => {
     if (isLeftSide) {
       if (slideCount == 0) {
         return "#9d9d9d6b";
-      } else return "#444444d3";
+      } else return "#111";
     } else if (!isLeftSide) {
       if (slideCount < slideImageLength - 2) {
-        return "#444444d3";
+        return "#111";
       } else return "#9d9d9d6b";
     }
   };

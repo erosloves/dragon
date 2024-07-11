@@ -1,0 +1,34 @@
+.footer {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 90px 10px 20px;
+}
+
+.socials {
+  display: flex;
+  gap: 20px;
+}
+
+.social {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  transition: all 350ms ease-in-out;
+}
+
+a:nth-last-of-type(1) .social {
+  right: 90px;
+  scale: 1.25;
+}
+a:nth-last-of-type(1) .social:hover {
+  scale: 1.5;
+}
+a:nth-last-of-type(2) .social {
+  right: 130px;
+}
+a:nth-last-of-type(2) .social:hover {
+  scale: 1.2;
+}
