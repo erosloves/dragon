@@ -14,7 +14,7 @@ export default function Home() {
         className={css.video}
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        src="IMG_4966.mp4"
+        src="/IMG_4966.mp4"
         autoPlay
         muted
         loop
