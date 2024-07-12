@@ -29,8 +29,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <UserProvider>
           <ToggleMenuProvider>
-            <BurgerMenu />
             <Header />
+            <BurgerMenu />
             <PopupMenu />
             <div className="container">{children}</div>
           </ToggleMenuProvider>

@@ -25,7 +25,8 @@ export default function Page({ params }) {
   const [dataIsLoaded, setDataIsLoaded] = useState(false);
 
   const [slideCount, setSlideCount] = useState(0);
-  const [slidesToRender, setSlidesToRender] = useState(slideImage);
+  // const [slidesToRender, setSlidesToRender] = useState(slideImage);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     const getModel = async () => {
@@ -46,15 +47,18 @@ export default function Page({ params }) {
   }, [params.id]);
 
   useEffect(() => {
-    setSlidesToRender(slideImage.slice(slideCount, slideCount + 2));
-  }, [slideCount, slideImage]);
+    // setSlidesToRender(slideImage.slice(slideCount, slideCount + 2));
+    setCurrentSlide(slideCount / 2);
+    console.log(slideCount);
+  }, [slideCount, slideImage, setCurrentSlide]);
 
   return (
-    <VerticalSplitScreen
-      slideCount={slideCount}
-      setSlideCount={setSlideCount}
-      slideImageLength={slideImage.length}
-    >
+    <>
+      <VerticalSplitScreen
+        slideCount={slideCount}
+        setSlideCount={setSlideCount}
+        slideImageLength={slideImage.length}
+      />
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -148,7 +152,7 @@ export default function Page({ params }) {
           )}
         </AnimatePresence>
 
-        <AnimatePresence mode="wait">
+        {/* <AnimatePresence mode="wait">
           <div className={styles.imgContainer}>
             {slidesToRender.map((img) => {
               return (
@@ -166,9 +170,37 @@ export default function Page({ params }) {
               );
             })}
           </div>
+        </AnimatePresence> */}
+
+        <AnimatePresence>
+          <div className={styles.imgContainer}>
+            {slideImage.map((img, i) => {
+              return (
+                <motion.figure
+                  key={img}
+                  className={styles.imgWrapper}
+                  style={{
+                    transform: `translateX(calc(-${slideCount * 200}% - ${
+                      slideCount * 10
+                    }px))`,
+                  }}
+                >
+                  <motion.img
+                    src={img}
+                    alt={img}
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.7 }}
+                    className={styles.img}
+                    onLoad={() => setLoading(false)}
+                  />
+                </motion.figure>
+              );
+            })}
+          </div>
         </AnimatePresence>
       </motion.div>
-    </VerticalSplitScreen>
+    </>
   );
 }
 
@@ -202,13 +234,21 @@ const VerticalSplitScreen = ({
     };
   }, []);
 
+  // const chacngeSlide = () => {
+  //   if (isLeftSide) {
+  //     if (slideCount > 0) setSlideCount(slideCount - 2);
+  //   } else if (!isLeftSide) {
+  //     if (slideCount < slideImageLength - 2) setSlideCount(slideCount + 2);
+  //   }
+  // };
   const chacngeSlide = () => {
     if (isLeftSide) {
-      if (slideCount > 0) setSlideCount(slideCount - 2);
+      if (slideCount > 0) setSlideCount(slideCount - 1);
     } else if (!isLeftSide) {
-      if (slideCount < slideImageLength - 2) setSlideCount(slideCount + 2);
+      if (slideCount < slideImageLength / 2 - 1) setSlideCount(slideCount + 1);
     }
   };
+
   return (
     <div onClick={() => chacngeSlide()} className={styles.VerticalSplitScreen}>
       <CustomCursor
@@ -241,7 +281,7 @@ const CustomCursor = ({ isLeftSide, slideCount, slideImageLength }) => {
         return "#9d9d9d6b";
       } else return "#111";
     } else if (!isLeftSide) {
-      if (slideCount < slideImageLength - 2) {
+      if (slideCount < slideImageLength / 2 - 1) {
         return "#111";
       } else return "#9d9d9d6b";
     }
@@ -252,7 +292,7 @@ const CustomCursor = ({ isLeftSide, slideCount, slideImageLength }) => {
         return "#9d9d9d6b";
       } else return "#111";
     } else if (!isLeftSide) {
-      if (slideCount < slideImageLength - 2) {
+      if (slideCount < slideImageLength / 2 - 1) {
         return "#111";
       } else return "#9d9d9d6b";
     }
