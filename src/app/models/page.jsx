@@ -3,7 +3,7 @@ import { useEffect, useState, useContext } from "react";
 import styles from "./page.module.css";
 import ModelCard from "@/components/ModelCard";
 import { AnimatePresence, motion } from "framer-motion";
-import Footer from "@/components/Footer";
+
 import GoToUp from "@/components/GoToUp";
 
 const cardAnimation = {
@@ -34,33 +34,29 @@ export default function Page() {
   }, []);
 
   return (
-    <>
-      <AnimatePresence>
-        <div className={styles.modelcard_wrapper}>
-          {dataResponse.map((el, i) => {
-            return (
-              <motion.div
-                key={i}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ amount: 0.2, once: true }}
-                variants={cardAnimation}
-                custom={i++}
-                style={{ width: "100%" }}
-              >
-                <ModelCard
-                  id={el.id}
-                  name={el.name}
-                  imgSrc={el.id}
-                  countModels={dataResponse.length}
-                ></ModelCard>
-              </motion.div>
-            );
-          })}
-        </div>
-        <GoToUp key={`GoToUp`} />
-        <Footer key={`footer`} />
-      </AnimatePresence>
-    </>
+    <AnimatePresence>
+      <div className={styles.modelcard_wrapper}>
+        {dataResponse.map((el, i) => {
+          return (
+            <motion.div
+              key={i}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ amount: 0.2, once: true }}
+              variants={cardAnimation}
+              custom={i++}
+              style={{ width: "100%" }}
+            >
+              <ModelCard
+                id={el.id}
+                name={el.name}
+                countModels={dataResponse.length}
+              />
+            </motion.div>
+          );
+        })}
+      </div>
+      <GoToUp key={`GoToUp`} />
+    </AnimatePresence>
   );
 }

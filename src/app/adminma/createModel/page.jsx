@@ -11,6 +11,7 @@ export default function CreateModel() {
   const [shoes, setShoes] = useState("");
   const [eyes, setEyes] = useState("");
   const [hair, setHair] = useState("");
+  const [inst, setInst] = useState("");
   const [files, setFiles] = useState({});
   const [previewUrls, setPreviewUrls] = useState([]);
   const uploadImages = useRef();
@@ -26,6 +27,7 @@ export default function CreateModel() {
       shoes,
       eyes,
       hair,
+      inst,
     };
     // Отпрака данных модели в БД
     await fetch("/api/postdata", {
@@ -160,6 +162,13 @@ export default function CreateModel() {
           name="hair"
           required
           placeholder="hair"
+          type="text"
+        />
+        <input
+          onChange={(e) => setInst(e.target.value)}
+          name="inst"
+          required
+          placeholder="inst"
           type="text"
         />
         <button type="submit">send</button>

@@ -2,6 +2,7 @@
 import styles from "./page.module.css";
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
 
 const variantsAnimateParams = {
   hidden: {
@@ -14,15 +15,14 @@ const variantsAnimateParams = {
     transition: { delay: custom * 0.2 },
   }),
 };
-
+const viewPort = window.visualViewport.width;
 export default function Page({ params }) {
   const [modelData, setModelData] = useState([]);
   const [slideImage, setSlideImage] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [dataIsLoaded, setDataIsLoaded] = useState(false);
-
   const [slideCount, setSlideCount] = useState(0);
-  // const [slidesToRender, setSlidesToRender] = useState(slideImage);
+  const [isCCVisible, setCCVisible] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
@@ -53,6 +53,8 @@ export default function Page({ params }) {
         slideCount={slideCount}
         setSlideCount={setSlideCount}
         slideImageLength={slideImage.length}
+        setCCVisible={setCCVisible}
+        isCCVisible={isCCVisible}
       />
       <motion.div
         initial={{ opacity: 0 }}
@@ -143,6 +145,18 @@ export default function Page({ params }) {
                   &nbsp;{modelData.hair}
                 </span>
               </motion.div>
+              <motion.a
+                variants={variantsAnimateParams}
+                custom={9}
+                className={styles.paramType}
+                style={{ position: "relative", zIndex: 16 }}
+                href={`https://www.instagram.com/${modelData.inst}`}
+                onHoverStart={() => setCCVisible(false)}
+                onHoverEnd={() => setCCVisible(true)}
+              >
+                inst:&nbsp;
+                {modelData.inst}
+              </motion.a>
             </motion.div>
           )}
         </AnimatePresence>
@@ -184,6 +198,7 @@ const VerticalSplitScreen = ({
   slideCount,
   setSlideCount,
   slideImageLength,
+  isCCVisible,
 }) => {
   const [isLeftSide, setIsLeftSide] = useState(true);
 
@@ -209,28 +224,45 @@ const VerticalSplitScreen = ({
     };
   }, []);
 
-  const chacngeSlide = () => {
+  const changeSlide = () => {
+    const acc = slideImageLength % 2;
     if (isLeftSide) {
-      if (slideCount > 0) setSlideCount(slideCount - 1);
+      if (slideCount > 0) {
+        setSlideCount(slideCount - 1);
+      } else if (slideCount == 0) {
+        setSlideCount(
+          acc == 0 ? slideImageLength / 2 - 1 : slideImageLength / 2 - 0.5
+        );
+      }
     } else if (!isLeftSide) {
-      if (slideCount < slideImageLength / 2 - 1) setSlideCount(slideCount + 1);
+      if (slideCount < slideImageLength / 2 - 1) {
+        setSlideCount(slideCount + 1);
+      } else setSlideCount(0);
     }
   };
 
   return (
-    <div onClick={() => chacngeSlide()} className={styles.VerticalSplitScreen}>
+    <div onClick={() => changeSlide()} className={styles.VerticalSplitScreen}>
       <CustomCursor
         isLeftSide={isLeftSide}
         slideCount={slideCount}
         slideImageLength={slideImageLength}
+        isCCVisible={isCCVisible}
       />
       {children}
     </div>
   );
 };
 
-const CustomCursor = ({ isLeftSide, slideCount, slideImageLength }) => {
+const CustomCursor = ({
+  isLeftSide,
+  isCCVisible,
+  slideCount,
+  slideImageLength,
+}) => {
   useEffect(() => {
+    if (viewPort <= 960) return;
+    if (!isCCVisible) return;
     const cursor = document.getElementById("custom-cursor");
 
     const handleMouseMove = (event) => {
@@ -242,56 +274,42 @@ const CustomCursor = ({ isLeftSide, slideCount, slideImageLength }) => {
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
     };
-  }, []);
+  }, [isCCVisible]);
   const polylineStroke = () => {
     if (isLeftSide) {
-      if (slideCount == 0) {
-        return "#9d9d9d6b";
-      } else return "#111";
+      return "#000";
     } else if (!isLeftSide) {
-      if (slideCount < slideImageLength / 2 - 1) {
-        return "#111";
-      } else return "#9d9d9d6b";
+      return "#000";
     }
-  };
-  const circletroke = () => {
-    if (isLeftSide) {
-      if (slideCount == 0) {
-        return "#9d9d9d6b";
-      } else return "#111";
-    } else if (!isLeftSide) {
-      if (slideCount < slideImageLength / 2 - 1) {
-        return "#111";
-      } else return "#9d9d9d6b";
-    }
+    // if (isLeftSide) {
+    //   if (slideCount == 0) {
+    //     return "#9d9d9d6b";
+    //   } else return "#111";
+    // } else if (!isLeftSide) {
+    //   if (slideCount < slideImageLength / 2 - 1) {
+    //     return "#111";
+    //   } else return "#9d9d9d6b";
+    // }
   };
 
   return (
-    <>
+    viewPort > 960 &&
+    isCCVisible && (
       <div id="custom-cursor">
         <svg
           width="50"
           height="50"
           xmlns="http://www.w3.org/2000/svg"
-          transform={isLeftSide ? "scale(1, 1)" : " scale(-1, 1)"}
+          transform={isLeftSide ? "scale(1, 1)" : "scale(-1, 1)"}
         >
-          <circle
-            cx="25"
-            cy="25"
-            r="24"
-            stroke={circletroke()}
-            strokeWidth="2"
-            fill="#9d9d9d6b"
-          />
-
           <polyline
             points="30,15 20,25 30,35"
             stroke={polylineStroke()}
-            strokeWidth="2"
+            strokeWidth="3"
             fill="none"
           />
         </svg>
       </div>
-    </>
+    )
   );
 };

@@ -16,14 +16,14 @@ export default function Layout({ children }) {
     );
   if (user) {
     return (
-      <div style={{ position: "relative", height: "calc(100vh - 100px)" }}>
+      <div style={{ position: "relative", width: "100%" }}>
         {children}
         <AdminMaBtn isLogged={user} />
       </div>
     );
   }
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", width: "100%" }}>
       <AdminMaBtn isLogged={user} />
     </div>
   );

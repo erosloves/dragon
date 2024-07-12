@@ -1,7 +1,8 @@
 import Image from "next/image";
 import styles from "./ModelCard.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
 import { Spin } from "antd";
 interface ModelData {
   id: number;
@@ -15,17 +16,28 @@ interface ModelData {
   eyes: string;
   hair: string;
 }
-const ModelCard = ({ imgSrc, name, id }: ModelData) => {
+
+const ModelCard = ({ name, id }: ModelData) => {
   const [isLoading, setLoading] = useState(true);
+  const [avatar, setAvatar] = useState("");
+  useEffect(() => {
+    const getImages = async () => {
+      const apiUrlEndpoint = `/api/images?id=${id}`;
+      const req = await fetch(apiUrlEndpoint);
+      const { results } = await req.json();
+      setAvatar(results[0]);
+    };
+    getImages();
+  });
   return (
     <Link href={"/model-bio/" + id} className={styles.modelcard}>
       <figure className={styles.modelcard_img}>
-        <Image
-          src={"/models/" + id + "/main.jpg"}
+        <motion.img
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2 }}
+          src={avatar}
           alt={name}
-          width={isLoading ? 0 : 1000}
-          height={1000}
-          loading="lazy"
           onLoad={() => setLoading(false)}
         />
       </figure>

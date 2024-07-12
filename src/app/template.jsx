@@ -7,14 +7,14 @@ export default function Transition({ children }) {
     animate: { opacity: 1, y: 0 },
   };
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       <motion.main
         key={`template`}
         initial="initial"
         animate="animate"
         exit="initial"
         variants={templateVariants}
-        transition={{ ease: "easeInOut", duration: 0.5 }}
+        transition={{ ease: "easeInOut", duration: 1 }}
         className="container"
       >
         {children}

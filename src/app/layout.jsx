@@ -8,6 +8,7 @@ import { ToggleMenuProvider } from "@/contexts/ToggleMenu";
 
 import Header from "@/components/Header/Header";
 import { PopupMenu } from "@/components/PopupMenu/PopupMenu";
+import Footer from "@/components/Footer";
 
 // components end
 
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
             <Header />
             <PopupMenu />
             {children}
+            <Footer key={`footer`} />
           </ToggleMenuProvider>
         </UserProvider>
       </body>

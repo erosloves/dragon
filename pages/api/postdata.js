@@ -12,12 +12,12 @@ export default async function handler(req, res) {
   });
 
   const body = JSON.parse(req.body);
-  const { name, height, bust, waist, hip, shoes, eyes, hair } = body;
+  const { name, height, bust, waist, hip, shoes, eyes, hair, inst } = body;
 
   try {
     const query = `INSERT INTO \`models\`
-      ( \`name\`, \`height\`, \`bust\`, \`waist\`, \`hip\`, \`shoes\`, \`eyes\`, \`hair\`)
-      VALUES ( \'${name}\', ${height}, ${bust}, ${waist}, ${hip}, ${shoes}, \'${eyes}\', \'${hair}\');`;
+      ( \`name\`, \`height\`, \`bust\`, \`waist\`, \`hip\`, \`shoes\`, \`eyes\`, \`hair\`, \`inst\`)
+      VALUES ( \'${name}\', ${height}, ${bust}, ${waist}, ${hip}, ${shoes}, \'${eyes}\', \'${hair}\', \'${inst}'\);`;
     await dbconnection.execute(query);
     dbconnection.end();
     console.log("ADDED");

@@ -10,14 +10,14 @@ export default function Transition({ children }) {
     animate: { opacity: 1, y: 0 },
   };
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       <motion.div
         key={usePathname}
         initial="initial"
         animate="animate"
         exit="initial"
         variants={templateVariants}
-        transition={{ ease: "easeInOut", duration: 0.5 }}
+        transition={{ ease: "easeInOut", duration: 1.5 }}
         style={{ width: "100%" }}
       >
         {children}

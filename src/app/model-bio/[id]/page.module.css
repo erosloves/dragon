@@ -67,6 +67,9 @@ h2.paramType {
   }
 }
 @media screen and (max-width: 960px) {
+  .VerticalSplitScreen {
+    cursor: default;
+  }
   .params {
     width: 100%;
   }
