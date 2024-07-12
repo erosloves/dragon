@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
 import styles from "./BurgerMenu.module.css";
-import { useToggleMenuContext } from "@/contexts/ToggleMenu";
 
+import { useToggleMenuContext } from "@/contexts/ToggleMenu";
 const BurgerMenu: React.FC = () => {
   const { toggleMenuVisible, burgerOpen } = useToggleMenuContext();
 
@@ -17,12 +17,16 @@ const BurgerMenu: React.FC = () => {
         <span className={burgerOpen ? styles.span_active : styles.span}></span>
         <span className={burgerOpen ? styles.span_active : styles.span}></span>
       </div>
-      <Link href="https://www.instagram.com/thedragon__mm">
+      <Link
+        href="https://www.instagram.com/thedragon__mm"
+        className={styles.social}
+      >
         <svg
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
-          className={styles.social}
+          width="20px"
+          height="20px"
         >
           <g id="social-instagram">
             <path
@@ -44,12 +48,11 @@ const BurgerMenu: React.FC = () => {
           </g>
         </svg>
       </Link>
-      <Link href={"https://t.me/thedragonmm_bot"}>
+      <Link href={"https://t.me/thedragonmm_bot"} className={styles.social}>
         <svg
-          className={styles.social}
           fill="#000000"
-          width="800px"
-          height="800px"
+          width="20px"
+          height="20px"
           viewBox="0 0 32 32"
           xmlns="http://www.w3.org/2000/svg"
         >

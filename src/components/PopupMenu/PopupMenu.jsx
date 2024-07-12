@@ -1,17 +1,26 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Link from "next/link";
 import styles from "./PopupMenu.module.css";
 import { ToggleMenuContext } from "@/contexts/ToggleMenu";
 import { useToggleMenuContext } from "@/contexts/ToggleMenu";
 import { paths } from "@/app/paths";
 import { AnimatePresence, motion } from "framer-motion";
+import { usePathname } from "next/navigation";
+
 export const PopupMenu = ({}) => {
-  const toggle = useContext(ToggleMenuContext);
-  const { toggleMenuVisible } = useToggleMenuContext();
+  const path = usePathname();
+
+  const { isMenuVisible, setMenuVisible, setBurgerOpen, toggleMenuVisible } =
+    useContext(ToggleMenuContext);
+
+  useEffect(() => {
+    setMenuVisible(false);
+    setBurgerOpen(false);
+  }, [path, setMenuVisible, setBurgerOpen]);
   return (
     <AnimatePresence>
-      {toggle.isMenuVisible && (
+      {isMenuVisible && (
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -19,15 +28,6 @@ export const PopupMenu = ({}) => {
           transition={{ duration: 0.5 }}
           className={styles.popupWrapper}
         >
-          {/* <Link
-            href={paths.home}
-            className={styles.li}
-            onClick={() => {
-              toggleMenuVisible();
-            }}
-          >
-            Home
-          </Link> */}
           <Link
             href={paths.models}
             className={styles.li}

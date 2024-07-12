@@ -11,12 +11,7 @@
 }
 .header {
   position: fixed;
-  /* position: absolute;
-  left: 0;
-  top: 0;
-  */
   z-index: 15;
-  overflow-y: hidden;
   align-items: center;
   height: 100px;
   border-bottom: 1px #aaa solid;
@@ -24,7 +19,7 @@
   overflow: hidden;
 }
 
-.header a {
+.logo {
   font-family: "NeueHaasDisplayThin";
   font-size: 30px;
   font-weight: lighter;
@@ -34,17 +29,35 @@
   justify-content: center;
   height: 100%;
   letter-spacing: "8px";
-  transition: all ease 300ms;
 }
-.header a:hover {
-  scale: 1.02;
+.logo img {
+  transition: all ease 300ms;
+  image-rendering: optimizeQuality;
+}
+.logo img:hover {
+  scale: 1.05;
 }
 
 .header img {
   width: 300px;
 }
 
-@media screen and (max-width: 430px) {
+@media screen and (max-width: 646px) {
+  .header img {
+    width: 250px;
+    height: 83px;
+    object-fit: cover;
+  }
+}
+@media screen and (max-width: 560px) {
+  .header img {
+    width: 230px;
+    height: 76px;
+    object-fit: cover;
+  }
+}
+
+@media screen and (max-width: 530px) {
   .header img {
     width: 200px;
     height: 66px;

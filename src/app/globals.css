@@ -18,23 +18,11 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
-
+  position: relative;
   width: 100%;
-  height: calc(100vh - 100px);
   padding-top: 100px;
 }
 
-section {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-
-  height: calc(100vh - 100px);
-  padding: 0 5%;
-
-  background-color: #eee;
-}
 .children_wrapper {
   display: flex;
   align-items: center;
@@ -49,15 +37,6 @@ a {
 li {
   list-style: none;
 }
-
-/* h1 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 50px;
-  box-sizing: border-box;
-  height: calc(100vh - 100px);
-} */
 
 h1 {
   position: absolute;
@@ -92,12 +71,12 @@ h1 {
 
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
-  width: 0; /* Устанавливаем ширину полосы прокрутки в 0 для WebKit-браузеров */
+  width: 0;
   height: 0;
 }
 
 html,
 body {
-  -ms-overflow-style: none; /* Скрываем полосу прокрутки в IE и Edge */
-  scrollbar-width: none; /* Скрываем полосу прокрутки в Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

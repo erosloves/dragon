@@ -1,10 +1,7 @@
 "use client";
 import styles from "./page.module.css";
-
-import { ToggleMenuContext } from "@/contexts/ToggleMenu";
-import { useContext, useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Spin } from "antd";
 
 const variantsAnimateParams = {
   hidden: {
@@ -47,9 +44,7 @@ export default function Page({ params }) {
   }, [params.id]);
 
   useEffect(() => {
-    // setSlidesToRender(slideImage.slice(slideCount, slideCount + 2));
     setCurrentSlide(slideCount / 2);
-    console.log(slideCount);
   }, [slideCount, slideImage, setCurrentSlide]);
 
   return (
@@ -152,26 +147,6 @@ export default function Page({ params }) {
           )}
         </AnimatePresence>
 
-        {/* <AnimatePresence mode="wait">
-          <div className={styles.imgContainer}>
-            {slidesToRender.map((img) => {
-              return (
-                <motion.img
-                  key={img}
-                  src={img}
-                  alt={img}
-                  className={styles.img}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.7 }}
-                  onLoad={() => setLoading(false)}
-                  loading="lazy"
-                />
-              );
-            })}
-          </div>
-        </AnimatePresence> */}
-
         <AnimatePresence>
           <div className={styles.imgContainer}>
             {slideImage.map((img, i) => {
@@ -234,13 +209,6 @@ const VerticalSplitScreen = ({
     };
   }, []);
 
-  // const chacngeSlide = () => {
-  //   if (isLeftSide) {
-  //     if (slideCount > 0) setSlideCount(slideCount - 2);
-  //   } else if (!isLeftSide) {
-  //     if (slideCount < slideImageLength - 2) setSlideCount(slideCount + 2);
-  //   }
-  // };
   const chacngeSlide = () => {
     if (isLeftSide) {
       if (slideCount > 0) setSlideCount(slideCount - 1);

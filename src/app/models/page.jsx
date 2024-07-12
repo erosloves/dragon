@@ -59,7 +59,7 @@ export default function Page() {
           })}
         </div>
         <GoToUp key={`GoToUp`} />
-        <Footer />
+        <Footer key={`footer`} />
       </AnimatePresence>
     </>
   );

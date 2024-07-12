@@ -1,6 +1,5 @@
 .burgerMenu {
   position: fixed;
-  z-index: 100;
   top: 40px;
   left: 10px;
   display: flex;
@@ -70,25 +69,50 @@
 }
 
 .social {
-  position: fixed;
-  z-index: 100;
+  position: absolute;
   top: 40px;
   width: 20px;
   height: 20px;
+
   cursor: pointer;
   transition: all 350ms ease-in-out;
 }
 
-a:nth-last-of-type(1) .social {
-  right: 90px;
-  scale: 1.25;
+.social svg {
+  width: 20px;
+  height: 20px;
+  transition: all ease 300ms;
+  fill: #888;
 }
-a:nth-last-of-type(1) .social:hover {
-  scale: 1.5;
+.social:hover svg {
+  fill: #222;
 }
-a:nth-last-of-type(2) .social {
+
+.social:nth-of-type(1) {
   right: 130px;
 }
-a:nth-last-of-type(2) .social:hover {
-  scale: 1.2;
+.social:nth-of-type(2) {
+  right: 90px;
+
+  scale: 1.25;
+}
+
+@media screen and (max-width: 990px) {
+  .social:nth-of-type(1) {
+    right: 70px;
+  }
+  .social:nth-of-type(2) {
+    right: 30px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .social:nth-of-type(1) {
+    right: 40px;
+    scale: 0.9;
+  }
+  .social:nth-of-type(2) {
+    right: 15px;
+    scale: 1;
+  }
 }
