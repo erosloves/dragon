@@ -7,7 +7,7 @@ export default function handler(req, res) {
   const imgDir = path.join(process.cwd(), `public/models/${id}`);
   const fileNames = fs.readdirSync(imgDir);
   const files = fileNames.map((el) => {
-    return `/models/${id}/` + el;
+    return `http://localhost:3000/models/${id}/` + el;
   });
 
   res.status(200).json({ results: files });
