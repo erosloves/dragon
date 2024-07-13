@@ -1,8 +1,10 @@
 "use client";
 import styles from "./page.module.css";
 import { useState, useEffect } from "react";
+import useViewPortWidth from "@/hooks/useViewPortWidth";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 
 const variantsAnimateParams = {
   hidden: {
@@ -15,15 +17,13 @@ const variantsAnimateParams = {
     transition: { delay: custom * 0.2 },
   }),
 };
-const viewPort = window.visualViewport.width;
+
 export default function Page({ params }) {
   const [modelData, setModelData] = useState([]);
   const [slideImage, setSlideImage] = useState([]);
-  const [isLoading, setLoading] = useState(true);
   const [dataIsLoaded, setDataIsLoaded] = useState(false);
   const [slideCount, setSlideCount] = useState(0);
   const [isCCVisible, setCCVisible] = useState(true);
-  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     const getModel = async () => {
@@ -33,19 +33,32 @@ export default function Page({ params }) {
       setModelData(results[0]);
       setDataIsLoaded(true);
     };
-    const getImage = async () => {
-      const apiUrlEndpoint = `/api/images?id=${params.id}`;
-      const req = await fetch(apiUrlEndpoint);
-      const { results } = await req.json();
-      setSlideImage(results);
-    };
+
     getModel();
-    getImage();
   }, [params.id]);
 
   useEffect(() => {
-    setCurrentSlide(slideCount / 2);
-  }, [slideCount, slideImage, setCurrentSlide]);
+    const getImage = async () => {
+      try {
+        const apiUrlEndpoint = `/api/images?id=${params.id}`;
+        const req = await fetch(apiUrlEndpoint);
+
+        if (!req.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const { results } = await req.json();
+        setSlideImage(results);
+      } catch (error) {
+        console.error(
+          "There has been a problem with your fetch operation:",
+          error
+        );
+      }
+    };
+
+    getImage();
+  }, [params.id]);
 
   return (
     <>
@@ -168,6 +181,8 @@ export default function Page({ params }) {
                 <motion.figure
                   key={img}
                   className={styles.imgWrapper}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   style={{
                     transform: `translateX(calc(-${slideCount * 200}% - ${
                       slideCount * 10
@@ -181,7 +196,6 @@ export default function Page({ params }) {
                     whileInView={{ opacity: 1 }}
                     transition={{ duration: 0.7 }}
                     className={styles.img}
-                    onLoad={() => setLoading(false)}
                   />
                 </motion.figure>
               );
@@ -254,12 +268,8 @@ const VerticalSplitScreen = ({
   );
 };
 
-const CustomCursor = ({
-  isLeftSide,
-  isCCVisible,
-  slideCount,
-  slideImageLength,
-}) => {
+const CustomCursor = ({ isLeftSide, isCCVisible }) => {
+  const viewPort = useViewPortWidth();
   useEffect(() => {
     if (viewPort <= 960) return;
     if (!isCCVisible) return;
@@ -274,22 +284,13 @@ const CustomCursor = ({
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
     };
-  }, [isCCVisible]);
+  }, [isCCVisible, viewPort]);
   const polylineStroke = () => {
     if (isLeftSide) {
       return "#000";
     } else if (!isLeftSide) {
       return "#000";
     }
-    // if (isLeftSide) {
-    //   if (slideCount == 0) {
-    //     return "#9d9d9d6b";
-    //   } else return "#111";
-    // } else if (!isLeftSide) {
-    //   if (slideCount < slideImageLength / 2 - 1) {
-    //     return "#111";
-    //   } else return "#9d9d9d6b";
-    // }
   };
 
   return (

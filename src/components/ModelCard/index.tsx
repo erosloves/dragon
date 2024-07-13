@@ -1,8 +1,6 @@
-import Image from "next/image";
 import styles from "./ModelCard.module.css";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
 import { Spin } from "antd";
 interface ModelData {
   id: number;
@@ -32,14 +30,7 @@ const ModelCard = ({ name, id }: ModelData) => {
   return (
     <Link href={"/model-bio/" + id} className={styles.modelcard}>
       <figure className={styles.modelcard_img}>
-        <motion.img
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2 }}
-          src={avatar}
-          alt={name}
-          onLoad={() => setLoading(false)}
-        />
+        <img src={avatar} alt={name} onLoad={() => setLoading(false)} />
       </figure>
       {isLoading && (
         <Spin
