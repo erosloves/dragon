@@ -11,26 +11,26 @@ export default async function handler(req, res) {
     database: process.env.MYSQL_DATABASE,
   });
 
-  const { id, action } = req.query;
-
   const computeAction = (action) => {
     switch (action) {
       case "params":
-        return `select * from models where id = ${id}`;
+        return `select * from models where id = ?`;
       case "avatar":
         return "";
       case "remove":
-        return `delete from models where id = ${id}`;
+        return `delete from models where id = ?`;
     }
   };
 
   try {
+    const { id, action } = req.query;
     const query = computeAction(action);
+    const values = [id | undefined];
+    const [result] = await dbconnection.execute(query, values);
+    res.status(200).json({ results: result });
 
-    const [q] = await dbconnection.execute(query);
-    res.status(200).json({ status: `removed` });
     dbconnection.end();
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 }

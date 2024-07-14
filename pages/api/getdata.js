@@ -24,7 +24,6 @@ export default async function handler(req, res) {
   };
   try {
     const { type, id } = req.query;
-
     const query = computeQueryType(type);
     const values = [id | undefined];
     const [results] = await dbconnection.execute(query, values);

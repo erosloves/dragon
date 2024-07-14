@@ -12,34 +12,31 @@
 .header {
   position: fixed;
   z-index: 15;
+  overflow: hidden;
   align-items: center;
   height: 100px;
   border-bottom: 1px #aaa solid;
   background-color: #fff;
-  overflow: hidden;
 }
 
 .logo {
   font-family: "NeueHaasDisplayThin";
   font-size: 30px;
   font-weight: lighter;
-
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
   letter-spacing: "8px";
 }
-.logo img {
+.logo svg {
+  width: 200px;
+
   transition: all ease 300ms;
   image-rendering: optimizeQuality;
 }
-.logo img:hover {
+.logo svg:hover {
   scale: 1.05;
-}
-
-.header img {
-  width: 300px;
 }
 
 @media screen and (max-width: 646px) {
