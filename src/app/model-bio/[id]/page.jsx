@@ -3,8 +3,6 @@ import styles from "./page.module.css";
 import { useState, useEffect } from "react";
 import useViewPortWidth from "@/hooks/useViewPortWidth";
 import { AnimatePresence, motion } from "framer-motion";
-import Link from "next/link";
-import Image from "next/image";
 
 const variantsAnimateParams = {
   hidden: {
@@ -62,118 +60,23 @@ export default function Page({ params }) {
 
   return (
     <>
+      <section className={styles.titleSection}>
+        <motion.img src={slideImage[0]} />
+        <motion.h2
+          variants={variantsAnimateParams}
+          custom={1}
+          className={styles.paramType}
+        >
+          {modelData.name}
+        </motion.h2>
+      </section>
       <VerticalSplitScreen
         slideCount={slideCount}
         setSlideCount={setSlideCount}
         slideImageLength={slideImage.length}
         setCCVisible={setCCVisible}
         isCCVisible={isCCVisible}
-      />
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className={styles.container}
       >
-        <AnimatePresence>
-          {dataIsLoaded && (
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              className={styles.params}
-            >
-              <motion.h2
-                variants={variantsAnimateParams}
-                custom={1}
-                className={styles.paramType}
-              >
-                {modelData.name}
-              </motion.h2>
-              <motion.div
-                variants={variantsAnimateParams}
-                custom={2}
-                className={styles.paramType}
-              >
-                height:
-                <span className={styles.paramValue}>
-                  &nbsp;{modelData.height}cm
-                </span>
-              </motion.div>
-              <motion.div
-                variants={variantsAnimateParams}
-                custom={3}
-                className={styles.paramType}
-              >
-                bust:
-                <span className={styles.paramValue}>
-                  &nbsp;{modelData.bust}cm
-                </span>
-              </motion.div>
-              <motion.div
-                variants={variantsAnimateParams}
-                custom={4}
-                className={styles.paramType}
-              >
-                waist:
-                <span className={styles.paramValue}>
-                  &nbsp;{modelData.waist}cm
-                </span>
-              </motion.div>
-              <motion.div
-                variants={variantsAnimateParams}
-                custom={5}
-                className={styles.paramType}
-              >
-                hip:
-                <span className={styles.paramValue}>
-                  &nbsp;{modelData.hip}cm
-                </span>
-              </motion.div>
-              <motion.div
-                variants={variantsAnimateParams}
-                custom={6}
-                className={styles.paramType}
-              >
-                shoes:
-                <span className={styles.paramValue}>
-                  &nbsp;{modelData.shoes}eu
-                </span>
-              </motion.div>
-              <motion.div
-                variants={variantsAnimateParams}
-                custom={7}
-                className={styles.paramType}
-              >
-                eyes:
-                <span className={styles.paramValue}>
-                  &nbsp;{modelData.eyes}
-                </span>
-              </motion.div>
-              <motion.div
-                variants={variantsAnimateParams}
-                custom={8}
-                className={styles.paramType}
-              >
-                hair:
-                <span className={styles.paramValue}>
-                  &nbsp;{modelData.hair}
-                </span>
-              </motion.div>
-              <motion.a
-                variants={variantsAnimateParams}
-                custom={9}
-                className={styles.paramType}
-                style={{ position: "relative", zIndex: 16 }}
-                href={`https://www.instagram.com/${modelData.inst}`}
-                onHoverStart={() => setCCVisible(false)}
-                onHoverEnd={() => setCCVisible(true)}
-              >
-                inst:&nbsp;
-                {modelData.inst}
-              </motion.a>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
         <AnimatePresence>
           <div className={styles.imgContainer}>
             {slideImage.map((img, i) => {
@@ -194,7 +97,7 @@ export default function Page({ params }) {
                     alt={img}
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
-                    transition={{ duration: 0.7 }}
+                    transition={{ duration: 1 }}
                     className={styles.img}
                   />
                 </motion.figure>
@@ -202,7 +105,108 @@ export default function Page({ params }) {
             })}
           </div>
         </AnimatePresence>
-      </motion.div>
+        {/* <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          className={styles.container}
+        >
+
+        </motion.div> */}
+      </VerticalSplitScreen>
+
+      <AnimatePresence>
+        {dataIsLoaded && (
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            className={styles.params}
+          >
+            {/* <motion.h2
+                variants={variantsAnimateParams}
+                custom={1}
+                className={styles.paramType}
+              >
+                {modelData.name}
+              </motion.h2> */}
+            <motion.div
+              variants={variantsAnimateParams}
+              custom={2}
+              className={styles.paramType}
+            >
+              height:
+              <span className={styles.paramValue}>
+                &nbsp;{modelData.height}cm
+              </span>
+            </motion.div>
+            <motion.div
+              variants={variantsAnimateParams}
+              custom={3}
+              className={styles.paramType}
+            >
+              bust:
+              <span className={styles.paramValue}>
+                &nbsp;{modelData.bust}cm
+              </span>
+            </motion.div>
+            <motion.div
+              variants={variantsAnimateParams}
+              custom={4}
+              className={styles.paramType}
+            >
+              waist:
+              <span className={styles.paramValue}>
+                &nbsp;{modelData.waist}cm
+              </span>
+            </motion.div>
+            <motion.div
+              variants={variantsAnimateParams}
+              custom={5}
+              className={styles.paramType}
+            >
+              hips:
+              <span className={styles.paramValue}>&nbsp;{modelData.hip}cm</span>
+            </motion.div>
+            <motion.div
+              variants={variantsAnimateParams}
+              custom={6}
+              className={styles.paramType}
+            >
+              shoes:
+              <span className={styles.paramValue}>
+                &nbsp;{modelData.shoes}eu
+              </span>
+            </motion.div>
+            <motion.div
+              variants={variantsAnimateParams}
+              custom={7}
+              className={styles.paramType}
+            >
+              eyes:
+              <span className={styles.paramValue}>&nbsp;{modelData.eyes}</span>
+            </motion.div>
+            <motion.div
+              variants={variantsAnimateParams}
+              custom={8}
+              className={styles.paramType}
+            >
+              hair:
+              <span className={styles.paramValue}>&nbsp;{modelData.hair}</span>
+            </motion.div>
+            <motion.a
+              variants={variantsAnimateParams}
+              custom={9}
+              className={styles.paramType}
+              style={{ position: "relative", zIndex: 16 }}
+              href={`https://www.instagram.com/${modelData.inst}`}
+              onHoverStart={() => setCCVisible(false)}
+              onHoverEnd={() => setCCVisible(true)}
+            >
+              inst:&nbsp;
+              <span className={styles.paramValue}>&nbsp;{modelData.inst}</span>
+            </motion.a>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
@@ -212,6 +216,7 @@ const VerticalSplitScreen = ({
   slideCount,
   setSlideCount,
   slideImageLength,
+  setCCVisible,
   isCCVisible,
 }) => {
   const [isLeftSide, setIsLeftSide] = useState(true);
@@ -256,7 +261,12 @@ const VerticalSplitScreen = ({
   };
 
   return (
-    <div onClick={() => changeSlide()} className={styles.VerticalSplitScreen}>
+    <div
+      onMouseEnter={() => setCCVisible(true)}
+      onMouseLeave={() => setCCVisible(false)}
+      onClick={() => changeSlide()}
+      className={styles.VerticalSplitScreen}
+    >
       <CustomCursor
         isLeftSide={isLeftSide}
         slideCount={slideCount}
@@ -294,23 +304,31 @@ const CustomCursor = ({ isLeftSide, isCCVisible }) => {
   };
 
   return (
-    viewPort > 960 &&
-    isCCVisible && (
-      <div id="custom-cursor">
-        <svg
-          width="50"
-          height="50"
-          xmlns="http://www.w3.org/2000/svg"
-          transform={isLeftSide ? "scale(1, 1)" : "scale(-1, 1)"}
-        >
-          <polyline
-            points="30,15 20,25 30,35"
-            stroke={polylineStroke()}
-            strokeWidth="3"
-            fill="none"
-          />
-        </svg>
-      </div>
+    viewPort > 960 && (
+      <AnimatePresence>
+        {isCCVisible && (
+          <motion.div
+            id="custom-cursor"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <svg
+              width="50"
+              height="50"
+              xmlns="http://www.w3.org/2000/svg"
+              transform={isLeftSide ? "scale(1, 1)" : "scale(-1, 1)"}
+            >
+              <polyline
+                points="30,15 20,25 30,35"
+                stroke={polylineStroke()}
+                strokeWidth="3"
+                fill="none"
+              />
+            </svg>
+          </motion.div>
+        )}
+      </AnimatePresence>
     )
   );
 };

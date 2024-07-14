@@ -1,34 +1,38 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 import style from "./Notification.module.css";
-
+import { useContext } from "react";
+import { NotificationContext } from "@/contexts/notification";
 const notifyVariants = {
   initial: { y: -200, x: "-50%", opacity: 0 },
-  animate: { y: -90, opacity: 1 },
+  animate: { y: 20, opacity: 1 },
 };
-export default function Notification({ isVisible, notifyData }) {
+export default function Notification() {
+  const { isNotifyVisible, notifyData } = useContext(NotificationContext);
+  const calcStatus = () => {
+    switch (notifyData.status) {
+      case "ok":
+        return style.ok;
+      case "error":
+        return style.error;
+      default:
+        return style.ok;
+    }
+  };
   return (
-    <motion.div
-      transition={{ ease: "easeInOut", duration: 0.5 }}
-      initial="initial"
-      //   animate="animate"
-      animate={isVisible ? "animate" : "initial"}
-      exit="initial"
-      variants={notifyVariants}
-      className={style.notify}
-      style={
-        notifyData.status == "ok"
-          ? {
-              backgroundColor: "#9fea99",
-              color: "green",
-            }
-          : {
-              backgroundColor: "#ea9999",
-              color: "red",
-            }
-      }
-    >
-      {notifyData.text}
-    </motion.div>
+    <AnimatePresence>
+      {isNotifyVisible && (
+        <motion.div
+          transition={{ ease: "easeInOut", duration: 0.5 }}
+          initial="initial"
+          animate="animate"
+          exit="initial"
+          variants={notifyVariants}
+          className={`${style.notify} ${calcStatus()}`}
+        >
+          {notifyData.text}
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

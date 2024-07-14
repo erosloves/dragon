@@ -12,7 +12,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-  width: 100%;
+  width: 80%;
   padding: 20px 0;
   gap: 10px;
 }
@@ -21,6 +21,7 @@
   font-weight: 400;
   display: flex;
   flex-direction: row;
+  text-transform: capitalize;
 }
 .paramValue {
   text-transform: lowercase;
@@ -30,35 +31,71 @@ h2.paramType {
   font-weight: 700;
   text-wrap: nowrap;
 }
+/* test */
+
+.titleSection {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: calc(100vh - 100px);
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.titleSection img {
+  object-fit: cover;
+}
+
+.titleSection h2 {
+  font-size: 20vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/*  */
 .VerticalSplitScreen {
-  position: fixed;
+  position: relative;
   z-index: 10;
-  top: 100px;
+
+  /* top: 100px; */
   left: 0;
   width: 100%;
   height: calc(100vh - 100px);
   cursor: none;
 }
-/*  test */
 
 .imgContainer {
   display: flex;
   overflow: hidden;
   width: 100%;
-  height: calc(100vh - 170px);
+  /* height: calc(100vh - 170px); */
+  height: 100%;
   gap: 5px;
 }
 .imgWrapper {
   flex-shrink: 0;
-
   width: 50%;
   height: 100%;
+  display: flex;
 }
-.imgWrapper img {
-  width: 100%;
-  height: 100%;
 
-  object-fit: cover;
+.imgWrapper:nth-of-type(odd) {
+  justify-content: flex-end;
+}
+
+.imgWrapper img {
+  /* width: 100%; */
+  height: 100%;
+  object-fit: contain;
 }
 
 @media screen and (max-width: 1074px) {
@@ -69,33 +106,31 @@ h2.paramType {
 @media screen and (max-width: 960px) {
   .VerticalSplitScreen {
     cursor: default;
+    height: auto;
   }
   .params {
     width: 100%;
   }
-  h2.paramType {
+  /* h2.paramType {
     font-size: 30px;
-
     display: flex;
     justify-content: center;
     width: 100%;
     margin-bottom: 30px;
-  }
+  } */
   .paramType:not(h2.paramType) {
     margin: 0 5px;
   }
   .imgContainer {
     overflow: visible;
     flex-direction: column;
+    align-items: center;
     gap: 10px;
   }
   .imgWrapper {
-    width: 100%;
+    width: 80%;
   }
-}
-
-@media screen and (max-width: 640px) {
-  h2.paramType {
-    display: none;
+  .imgWrapper img {
+    width: 100%;
   }
 }

@@ -1,7 +1,7 @@
 import styles from "./ModelCard.module.css";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Spin } from "antd";
 interface ModelData {
   id: number;
@@ -31,27 +31,33 @@ const ModelCard = ({ name, id }: ModelData) => {
   return (
     <Link href={"/model-bio/" + id} className={styles.modelcard}>
       <figure className={styles.modelcard_img}>
-        <motion.img
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-          src={avatar}
-          alt={name}
-          onLoad={() => setLoading(false)}
-        />
+        <img src={avatar} alt={name} onLoad={() => setLoading(false)} />
+        <AnimatePresence>
+          {isLoading && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, transition: { delay: 1 } }}
+              style={{
+                position: "absolute",
+                top: "0",
+                left: "0",
+
+                zIndex: 5,
+                width: "100%",
+                height: "100%",
+                background: "#fff",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Spin size="large" />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </figure>
-      {isLoading && (
-        <Spin
-          style={{
-            position: "absolute",
-            top: "45%",
-            left: "50%",
-            transform: "translateX(-50%)",
-            zIndex: 5,
-          }}
-          size="large"
-        />
-      )}
+
       <span className={styles.modelcard_name}>{name}</span>
     </Link>
   );

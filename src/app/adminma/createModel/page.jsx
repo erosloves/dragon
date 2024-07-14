@@ -1,6 +1,7 @@
 "use client";
 import style from "./page.module.css";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
+import { NotificationContext } from "@/contexts/notification";
 import { AdminMaBtn, NavBtn } from "@/components/AdminMaBtn";
 export default function CreateModel() {
   const [name, setName] = useState("");
@@ -15,6 +16,9 @@ export default function CreateModel() {
   const [files, setFiles] = useState({});
   const [previewUrls, setPreviewUrls] = useState([]);
   const uploadImages = useRef();
+
+  const { isNotifyVisible, setNotifyVisible, notifyData, setNotifyData } =
+    useContext(NotificationContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,7 +38,6 @@ export default function CreateModel() {
       method: "POST",
       body: JSON.stringify(data),
     });
-    console.log("YEEESS");
 
     // Отправка изображений
     const images = new FormData();
@@ -56,12 +59,11 @@ export default function CreateModel() {
     if (reqPostImg.ok && reqLastId.ok) {
       // Очистка формы после отправки
       Array.from(e.target.childNodes).map((e) => (e.value = ""));
-      setPreviewUrls([]);
-      //
+      setFiles({});
       setNotifyVisible(true);
-      setNotifyMsg({ text: "Success!", status: "ok" });
+      setNotifyData({ text: "Success!", status: "ok" });
     } else {
-      console.error("Something was wrong!");
+      setNotifyData({ text: "Something was wrong!", status: "error" });
     }
   };
   // Добавление изображений из формы в объект для отправки на сервер
@@ -101,12 +103,10 @@ export default function CreateModel() {
       return URL.createObjectURL(file);
     });
     setPreviewUrls(selectedPrewievUrls);
-    // console.log();
   }, [files]);
+
   return (
     <div className={style.datawrapper}>
-      <AdminMaBtn isLogged={true} />
-      <NavBtn />
       <form className={style.inputwrapper} onSubmit={handleSubmit}>
         <input
           onChange={(e) => setName(e.target.value)}

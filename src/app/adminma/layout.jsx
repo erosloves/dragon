@@ -1,9 +1,10 @@
 "use client";
+import { useContext } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { AdminMaBtn } from "@/components/AdminMaBtn";
-
+import { NavBtn } from "@/components/AdminMaBtn";
 import Notification from "@/components/Notification/Notification";
-
+import { NotificationContextProvider } from "@/contexts/notification";
 export default function Layout({ children }) {
   const { user, error, isLoading } = useUser();
 
@@ -17,14 +18,18 @@ export default function Layout({ children }) {
   if (user) {
     return (
       <div style={{ position: "relative", width: "100%" }}>
-        {children}
-        <AdminMaBtn isLogged={user} />
+        <NotificationContextProvider>
+          <Notification />
+          {children}
+          <AdminMaBtn isLogged={true} />
+          <NavBtn />
+        </NotificationContextProvider>
       </div>
     );
   }
   return (
     <div style={{ position: "relative", width: "100%" }}>
-      <AdminMaBtn isLogged={user} />
+      <AdminMaBtn isLogged={false} />
     </div>
   );
 }

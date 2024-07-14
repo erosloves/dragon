@@ -1,21 +1,10 @@
 import Link from "next/link";
+import css from "./index.module.css";
 export function AdminMaBtn({ isLogged }) {
   return (
     <Link
       href={isLogged ? "/api/auth/logout" : "/api/auth/login"}
-      style={{
-        position: "absolute",
-        right: "20px",
-        top: "10px",
-        width: "100px",
-        backgroundColor: "#333",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "10px",
-        borderRadius: "20px",
-        color: "#fff",
-      }}
+      className={`${css.btn} ${css.AdminMaBtn}`}
     >
       {isLogged ? "Logout" : "Login"}
     </Link>
@@ -23,22 +12,7 @@ export function AdminMaBtn({ isLogged }) {
 }
 export function NavBtn() {
   return (
-    <Link
-      href={"/adminma"}
-      style={{
-        position: "absolute",
-        right: "20px",
-        top: "55px",
-        width: "100px",
-        backgroundColor: "#333",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "10px",
-        borderRadius: "20px",
-        color: "#fff",
-      }}
-    >
+    <Link href={"/adminma"} className={`${css.btn} ${css.NavBtn}`}>
       Go back
     </Link>
   );

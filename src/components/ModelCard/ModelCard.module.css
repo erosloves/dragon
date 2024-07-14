@@ -1,5 +1,4 @@
 .modelcard {
-  position: relative;
   display: flex;
   overflow: hidden;
   align-items: center;
@@ -9,6 +8,7 @@
 }
 
 .modelcard_img {
+  position: relative;
   overflow: hidden;
   width: 100%;
   height: 100%;
