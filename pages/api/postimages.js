@@ -25,7 +25,8 @@ const handler = async (req, res) => {
       });
       const { id } = req.query;
       const files = req.files;
-      const uploadDir = path.join(process.cwd(), `public/models/${id}`);
+      const uploadDir = path.join(`/var/www/files/models/${id}`);
+      // const uploadDir = path.join(process.cwd(), `public/models/${id}`);
 
       if (!fs.existsSync(uploadDir)) {
         fs.mkdirSync(uploadDir, { recursive: true });
