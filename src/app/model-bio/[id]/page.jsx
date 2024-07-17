@@ -25,7 +25,7 @@ export default function Page({ params }) {
 
   useEffect(() => {
     const getModel = async () => {
-      const apiUrlEndpoint = `/api/getdata?type=selectById&id=${params.id}`;
+      const apiUrlEndpoint = `/api/client/getdata?type=selectById&id=${params.id}`;
       const req = await fetch(apiUrlEndpoint);
       const { results } = await req.json();
       setModelData(results[0]);
@@ -38,7 +38,7 @@ export default function Page({ params }) {
   useEffect(() => {
     const getImage = async () => {
       try {
-        const apiUrlEndpoint = `/api/images?id=${params.id}`;
+        const apiUrlEndpoint = `/api/client/getimages?id=${params.id}`;
         const req = await fetch(apiUrlEndpoint);
 
         if (!req.ok) {

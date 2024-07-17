@@ -24,10 +24,15 @@ export default function Page() {
 
   useEffect(() => {
     const getPageData = async () => {
-      const apiUrlEndpoint = `/api/getdata?type=selectAll`;
-      const req = await fetch(apiUrlEndpoint);
-      const { results } = await req.json();
-      setDataResponse(results);
+      const apiUrlEndpoint = `/api/client/getdata?type=selectAll`;
+      await fetch(apiUrlEndpoint, {
+        method: "GET",
+        headers: {
+          Authorization: process.env.API_AUTH_TOKEN,
+        },
+      })
+        .then((response) => response.json())
+        .then((json) => setDataResponse(json.results));
     };
 
     getPageData();

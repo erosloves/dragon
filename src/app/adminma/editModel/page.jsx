@@ -10,7 +10,7 @@ function Page() {
   const [dataForEditing, setDataForEditing] = useState([]);
   const [isEditorVisible, setEditorVisible] = useState(false);
   const getModelsData = async () => {
-    const req = await fetch("/api/getdata?type=selectAll");
+    const req = await fetch("/api/client/getdata?type=selectAll");
     const { results } = await req.json();
     setModelsData(results);
   };
@@ -21,7 +21,7 @@ function Page() {
   // fx
 
   const editParams = async (id) => {
-    const req = await fetch(`/api/editdata?id=${id}&action=params`);
+    const req = await fetch(`/api/admin/editdata?id=${id}&action=params`);
     const { results } = await req.json();
     if (req.ok) {
       setDataForEditing(results[0]);
@@ -30,7 +30,7 @@ function Page() {
   };
 
   const removeModel = async (id) => {
-    const req = await fetch(`/api/editdata?id=${id}&action=remove`);
+    const req = await fetch(`/api/admin/editdata?id=${id}&action=remove`);
     const { results } = await req.json();
     if (req.ok) {
       setNotifyData({ text: "The model has just removed" });

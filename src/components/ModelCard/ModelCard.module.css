@@ -4,7 +4,7 @@
   align-items: center;
   flex-direction: column;
   justify-content: space-between;
-  height: calc(75vh);
+  height: calc(50vh);
 }
 
 .modelcard_img {
@@ -27,8 +27,8 @@
 
 .modelcard_name {
   font-family: "NeueHaasDisplayRoman", sans-serif;
-  font-size: 30px;
+  font-size: 20px;
   font-weight: 400;
-  margin-top: 20px;
+  /* margin-top: 20px; */
   text-transform: uppercase;
 }

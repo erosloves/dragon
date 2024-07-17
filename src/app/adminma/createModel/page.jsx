@@ -46,12 +46,12 @@ export default function CreateModel() {
     });
 
     // Здесь мы получаем id последней модели в БД
-    const reqLastId = await fetch(`/api/getdata?type=lastId`);
+    const reqLastId = await fetch(`/api/client/getdata?type=lastId`);
     const { results } = await reqLastId.json();
     let { lastId } = results[0];
 
     // // Чтобы потом, используя lastId отправить фотографии по указанному адресу
-    const reqPostImg = await fetch(`/api/postimages?id=${lastId}`, {
+    const reqPostImg = await fetch(`/api/admin/postimages?id=${lastId}`, {
       method: "POST",
       body: images,
     });

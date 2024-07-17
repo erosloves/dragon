@@ -21,10 +21,15 @@ const ModelCard = ({ name, id }: ModelData) => {
   const [avatar, setAvatar] = useState("");
   useEffect(() => {
     const getImages = async () => {
-      const apiUrlEndpoint = `/api/images?id=${id}`;
-      const req = await fetch(apiUrlEndpoint);
-      const { results } = await req.json();
-      setAvatar(results[0]);
+      const apiUrlEndpoint = `/api/client/getimages?id=${id}`;
+      await fetch(apiUrlEndpoint, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${process.env.API_AUTH_TOKEN}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((obj) => setAvatar(obj.results[0]));
     };
     getImages();
   });
