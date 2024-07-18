@@ -17,11 +17,10 @@ const linkVariants = {
 
 export default function Home() {
   const [isLoaded, setLoaded] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
+
   useEffect(() => {
     setTimeout(() => {
       setLoaded(true);
-      setIsPlaying(true);
     }, 3000);
   }, [isLoaded, setLoaded]);
 
@@ -180,16 +179,17 @@ export default function Home() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      <motion.video
-        className={css.video}
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        autoPlay={isPlaying}
-        muted
-        loop
-        src="/video/IMG_7064.mov"
-      />
+      {isLoaded && (
+        <motion.video
+          className={css.video}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          autoPlay
+          muted
+          loop
+          src="/video/IMG_7064.mov"
+        />
+      )}
     </motion.div>
   );
 }

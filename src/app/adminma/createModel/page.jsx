@@ -2,7 +2,7 @@
 import style from "./page.module.css";
 import { useRef, useState, useEffect, useContext } from "react";
 import { NotificationContext } from "@/contexts/notification";
-import { AdminMaBtn, NavBtn } from "@/components/AdminMaBtn";
+
 export default function CreateModel() {
   const [name, setName] = useState("");
   const [height, setHeight] = useState("");
