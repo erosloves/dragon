@@ -18,15 +18,22 @@ export default async function handler(req, res) {
         return "SELECT * from models WHERE id = ?";
       case "lastId":
         return "SELECT MAX(id) as lastId from models";
+      case "nameById":
+        return "SELECT id as id from models WHERE name = ?";
       default:
         break;
     }
   };
   try {
     const { type, id } = req.query;
+    const { name } = JSON.parse(req.body);
+
     const query = computeQueryType(type);
     const values = [id | undefined];
-    const [results] = await dbconnection.execute(query, values);
+
+    // const [results] = await dbconnection.execute(query, values);
+    const [results] = name;
+
     res.status(200).json({ results: results });
     dbconnection.end();
   } catch (error) {

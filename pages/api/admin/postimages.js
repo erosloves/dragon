@@ -23,9 +23,11 @@ const handler = async (req, res) => {
           resolve();
         });
       });
-      const { id } = req.query;
+      // const { name } = req.query;
+      // const uploadDir = path.join("/var/www/files/models", `${id}`);
+      const { id, name } = req.query;
       const files = req.files;
-      const uploadDir = path.join("/var/www/files/models", `${id}`);
+      const uploadDir = path.join(process.env.STORAGE_DIR, `${id}`);
 
       if (!fs.existsSync(uploadDir)) {
         fs.mkdirSync(uploadDir, { recursive: true });
@@ -46,9 +48,9 @@ const handler = async (req, res) => {
         })
       );
 
-      res
-        .status(200)
-        .json({ message: "Images uploaded and compressed successfully" });
+      res.status(200).json({
+        message: `Pictures of ${name}'s success loaded. The model was created!`,
+      });
     } catch (error) {
       console.error(error);
       res

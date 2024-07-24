@@ -21,7 +21,7 @@ export default function Home() {
   useEffect(() => {
     setTimeout(() => {
       setLoaded(true);
-    }, 3000);
+    }, 2000);
   }, [isLoaded, setLoaded]);
 
   return (
@@ -89,8 +89,6 @@ export default function Home() {
             key={`394h348`}
           >
             <motion.div
-              // initial="initial"
-              // whileInView="animate"
               key={`sodifjsodjf`}
               custom={2}
               className={css.link}
@@ -99,8 +97,6 @@ export default function Home() {
               <Link href="/models">models</Link>
             </motion.div>
             <motion.div
-              // initial="initial"
-              // whileInView="animate"
               key={`ebwieuwe`}
               custom={3}
               className={css.link}
@@ -143,9 +139,9 @@ export default function Home() {
                 clipRule: "evenodd",
               }}
               initial={{ y: 100, opacity: 0 }}
-              animate={{ y: 0, opacity: 1, scale: 1 }}
-              exit={{ y: "calc(30px - 50vh)", opacity: 0, scale: 0.3 }}
-              transition={{ duration: 2 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 0, opacity: 0 }}
+              transition={{ duration: 1 }}
               viewBox="0 0 314 105.98"
             >
               <defs>

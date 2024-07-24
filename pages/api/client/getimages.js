@@ -1,6 +1,4 @@
 // здесь я получаю список изображений в директории для рендеринга их на странице модели
-import fs from "fs";
-import path from "path";
 import dotenv from "dotenv";
 dotenv.config();
 

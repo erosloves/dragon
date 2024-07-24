@@ -17,8 +17,7 @@ export default function CreateModel() {
   const [previewUrls, setPreviewUrls] = useState([]);
   const uploadImages = useRef();
 
-  const { isNotifyVisible, setNotifyVisible, notifyData, setNotifyData } =
-    useContext(NotificationContext);
+  const { setNotifyVisible, setNotifyData } = useContext(NotificationContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,36 +33,46 @@ export default function CreateModel() {
       inst,
     };
     // Отпрака данных модели в БД
-    await fetch("/api/postdata", {
+    const dbConnection = await fetch("/api/admin/postdata", {
       method: "POST",
       body: JSON.stringify(data),
-    });
-
-    // Отправка изображений
-    const images = new FormData();
-    Object.values(files).forEach((file) => {
-      images.append("files", file);
     });
 
     // Здесь мы получаем id последней модели в БД
     const reqLastId = await fetch(`/api/client/getdata?type=lastId`);
     const { results } = await reqLastId.json();
     let { lastId } = results[0];
-
-    // // Чтобы потом, используя lastId отправить фотографии по указанному адресу
-    const reqPostImg = await fetch(`/api/admin/postimages?id=${lastId}`, {
-      method: "POST",
-      body: images,
+    // Отправка изображений
+    const images = new FormData();
+    Object.values(files).forEach((file) => {
+      images.append("files", file);
     });
 
-    if (reqPostImg.ok && reqLastId.ok) {
+    // // Чтобы потом, используя lastId отправить фотографии по указанному адресу
+    const reqPostImg = await fetch(
+      `/api/admin/postimages?name=${name}&id=${id}`,
+      {
+        method: "POST",
+        body: images,
+      }
+    );
+    const { message } = await reqPostImg.json();
+    // const reqPostImg = await fetch(`/api/admin/postimages?id=${lastId}`, {
+    //   method: "POST",
+    //   body: images,
+    // });
+
+    if (
+      reqPostImg.ok
+      //  && reqLastId.ok
+    ) {
       // Очистка формы после отправки
       Array.from(e.target.childNodes).map((e) => (e.value = ""));
       setFiles({});
       setNotifyVisible(true);
-      setNotifyData({ text: "Success!", status: "ok" });
+      setNotifyData({ text: message, status: "ok" });
     } else {
-      setNotifyData({ text: "Something was wrong!", status: "error" });
+      setNotifyData({ text: message, status: "error" });
     }
   };
   // Добавление изображений из формы в объект для отправки на сервер
