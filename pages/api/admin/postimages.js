@@ -23,8 +23,7 @@ const handler = async (req, res) => {
           resolve();
         });
       });
-      // const { name } = req.query;
-      // const uploadDir = path.join("/var/www/files/models", `${id}`);
+
       const { id, name } = req.query;
       const files = req.files;
       const uploadDir = path.join(process.env.STORAGE_DIR, `${id}`);

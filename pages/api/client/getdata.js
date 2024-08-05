@@ -26,13 +26,12 @@ export default async function handler(req, res) {
   };
   try {
     const { type, id } = req.query;
-    const { name } = JSON.parse(req.body);
+    // const { name } = JSON.parse(req.body);
 
     const query = computeQueryType(type);
     const values = [id | undefined];
 
-    // const [results] = await dbconnection.execute(query, values);
-    const [results] = name;
+    const [results] = await dbconnection.execute(query, values);
 
     res.status(200).json({ results: results });
     dbconnection.end();

@@ -17,7 +17,7 @@ const BurgerMenu: React.FC = () => {
         <span className={burgerOpen ? styles.span_active : styles.span}></span>
         <span className={burgerOpen ? styles.span_active : styles.span}></span>
       </div>
-      <Link
+      {/* <Link
         href="https://www.instagram.com/thedragon__mm"
         className={styles.social}
       >
@@ -47,7 +47,7 @@ const BurgerMenu: React.FC = () => {
             <circle cx="18.5" cy="6" r="1.5" />
           </g>
         </svg>
-      </Link>
+      </Link> */}
       <Link href={"https://t.me/thedragonmm_bot"} className={styles.social}>
         <svg
           fill="#000000"

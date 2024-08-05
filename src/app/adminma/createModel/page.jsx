@@ -50,7 +50,7 @@ export default function CreateModel() {
 
     // // Чтобы потом, используя lastId отправить фотографии по указанному адресу
     const reqPostImg = await fetch(
-      `/api/admin/postimages?name=${name}&id=${id}`,
+      `/api/admin/postimages?name=${name}&id=${lastId}`,
       {
         method: "POST",
         body: images,

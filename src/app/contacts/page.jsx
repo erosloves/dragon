@@ -8,7 +8,7 @@ function Contacts() {
       <div className={css.itemsCollection}>
         <div className={css.contactItem}>
           <Link href="https://www.instagram.com/thedragon__mm">
-            <svg
+            {/* <svg
               // fill="#000000"
               version="1.1"
               xmlns="http://www.w3.org/2000/svg"
@@ -32,8 +32,8 @@ function Contacts() {
                 />
                 <circle cx="18.5" cy="6" r="1.5" />
               </g>
-            </svg>
-            thedragon__mm
+            </svg> */}
+            Inst: thedragon__mm
           </Link>
         </div>
         <div className={css.contactItem}>

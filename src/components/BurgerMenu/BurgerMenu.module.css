@@ -73,7 +73,6 @@
   top: 40px;
   width: 20px;
   height: 20px;
-
   cursor: pointer;
   transition: all 350ms ease-in-out;
 }
@@ -88,30 +87,41 @@
   fill: #222;
 }
 
-.social:nth-of-type(1) {
+.social {
+  right: 90px;
+  scale: 1.25;
+}
+
+/* .social:nth-of-type(1) {
   right: 130px;
 }
 .social:nth-of-type(2) {
   right: 90px;
-
   scale: 1.25;
-}
+} */
 
 @media screen and (max-width: 990px) {
-  .social:nth-of-type(1) {
+  /* .social:nth-of-type(1) {
     right: 70px;
   }
   .social:nth-of-type(2) {
+    right: 30px;
+  } */
+  .social {
     right: 30px;
   }
 }
 
 @media screen and (max-width: 400px) {
-  .social:nth-of-type(1) {
+  /* .social:nth-of-type(1) {
     right: 40px;
     scale: 0.9;
   }
   .social:nth-of-type(2) {
+    right: 15px;
+    scale: 1;
+  } */
+  .social {
     right: 15px;
     scale: 1;
   }
