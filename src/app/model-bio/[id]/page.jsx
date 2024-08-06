@@ -21,7 +21,7 @@ export default function Page({ params }) {
   const [slideImage, setSlideImage] = useState([]);
   const [dataIsLoaded, setDataIsLoaded] = useState(false);
   const [slideCount, setSlideCount] = useState(0);
-  const [isCCVisible, setCCVisible] = useState(true);
+  const [isCCVisible, setCCVisible] = useState(false);
 
   useEffect(() => {
     const getModel = async () => {
@@ -105,13 +105,6 @@ export default function Page({ params }) {
             })}
           </div>
         </AnimatePresence>
-        {/* <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          className={styles.container}
-        >
-
-        </motion.div> */}
       </VerticalSplitScreen>
 
       <AnimatePresence>
@@ -121,13 +114,6 @@ export default function Page({ params }) {
             whileInView="visible"
             className={styles.params}
           >
-            {/* <motion.h2
-                variants={variantsAnimateParams}
-                custom={1}
-                className={styles.paramType}
-              >
-                {modelData.name}
-              </motion.h2> */}
             <motion.div
               variants={variantsAnimateParams}
               custom={2}
@@ -260,6 +246,31 @@ const VerticalSplitScreen = ({
     }
   };
 
+  document.addEventListener(
+    "keydown",
+    debounce(function (event) {
+      const acc = slideImageLength % 2;
+      switch (event.key) {
+        case "ArrowLeft":
+          if (slideCount > 0) {
+            setSlideCount(slideCount - 1);
+          } else if (slideCount == 0) {
+            setSlideCount(
+              acc == 0 ? slideImageLength / 2 - 1 : slideImageLength / 2 - 0.5
+            );
+          }
+          break;
+        case "ArrowRight":
+          if (slideCount < slideImageLength / 2 - 1) {
+            setSlideCount(slideCount + 1);
+          } else setSlideCount(0);
+          break;
+        default:
+          break;
+      }
+    }, 500)
+  );
+
   return (
     <div
       onMouseEnter={() => setCCVisible(true)}
@@ -267,12 +278,14 @@ const VerticalSplitScreen = ({
       onClick={() => changeSlide()}
       className={styles.VerticalSplitScreen}
     >
-      <CustomCursor
-        isLeftSide={isLeftSide}
-        slideCount={slideCount}
-        slideImageLength={slideImageLength}
-        isCCVisible={isCCVisible}
-      />
+      {isCCVisible && (
+        <CustomCursor
+          isLeftSide={isLeftSide}
+          slideCount={slideCount}
+          slideImageLength={slideImageLength}
+          isCCVisible={isCCVisible}
+        />
+      )}
       {children}
     </div>
   );
@@ -332,3 +345,16 @@ const CustomCursor = ({ isLeftSide, isCCVisible }) => {
     )
   );
 };
+
+// Функция дебаунсинга
+function debounce(func, delay) {
+  let timeoutId;
+  return function (...args) {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+}

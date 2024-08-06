@@ -20,11 +20,17 @@
 
 .functions {
   display: flex;
-  gap: 5px;
+  gap: 15px;
 }
 
 .functions > * {
   cursor: pointer;
+  padding: 5px 10px;
+}
+.functions .disabled {
+  background-color: #fff;
+  cursor: not-allowed;
+  color: #ddd;
 }
 
 /* paramsEditor */

@@ -30,6 +30,7 @@ function Page() {
   };
 
   const editAvatar = (id) => console.log("edited");
+  const editPictures = (id) => console.log("edited");
 
   const removeModel = async (id) => {
     const req = await fetch(`/api/admin/editdata?id=${id}&action=remove`);
@@ -51,7 +52,21 @@ function Page() {
               {el.name}
               <div className={css.functions}>
                 <div onClick={() => editParams(el.id)}>Edit params</div>
-                <div onClick={() => editAvatar(el.id)}>Edit the avatar</div>
+                <div
+                  onClick={() => editAvatar(el.id)}
+                  className={css.disabled}
+                  title="This function will be available soon"
+                >
+                  Edit the avatar
+                </div>
+                <div
+                  onClick={() => editPictures(el.id)}
+                  className={css.disabled}
+                  title="This function will be available soon"
+                >
+                  Edit pictures
+                </div>
+
                 <div onClick={() => removeModel(el.id)}>Remove the model</div>
               </div>
             </div>
