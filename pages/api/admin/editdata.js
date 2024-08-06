@@ -21,16 +21,37 @@ export default async function handler(req, res) {
         return `delete from models where id = ?`;
     }
   };
+  const { id, action } = req.query;
 
-  try {
-    const { id, action } = req.query;
-    const query = computeAction(action);
-    const values = [id | undefined];
-    const [result] = await dbconnection.execute(query, values);
-    res.status(200).json({ results: result });
+  if (action == "params") {
+    try {
+      const query = computeAction(action);
+      const values = [id | undefined];
+      const [result] = await dbconnection.execute(query, values);
+      res.status(200).json({ results: result });
 
-    dbconnection.end();
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+      dbconnection.end();
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+  if (action == "editParams") {
+    try {
+      const body = JSON.parse(req.body);
+      const { name, height, bust, waist, hip, shoes, eyes, hair, inst } = body;
+      const updates = Object.entries(body)
+        .map(([key, value]) => `${key} = ?`)
+        .join(", ");
+      const values = [...Object.values(body), id];
+
+      const query = `UPDATE models SET ${updates} WHERE id = ?`;
+
+      const [result] = await dbconnection.execute(query, values);
+      res.status(200).json({ results: result });
+
+      dbconnection.end();
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
   }
 }

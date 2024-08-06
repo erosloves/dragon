@@ -52,11 +52,7 @@ export default function Page() {
               custom={i++}
               style={{ width: "100%" }}
             >
-              <ModelCard
-                id={el.id}
-                name={el.name}
-                countModels={dataResponse.length}
-              />
+              <ModelCard id={el.id} name={el.name} />
             </motion.div>
           );
         })}

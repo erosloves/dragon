@@ -15,7 +15,7 @@ export default function Page() {
         Create a model
       </Link>
       <Link className={css.link} href={currentPath + "/editModel"}>
-        Edit a model
+        Edit models
       </Link>
     </div>
   );
