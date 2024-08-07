@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 const Header = ({}) => {
   const path = usePathname();
   const homePage = "/";
-  console.log();
+
   return (
     <AnimatePresence>
       {!(path == homePage) && (

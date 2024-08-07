@@ -175,7 +175,9 @@ export default function Home() {
           </motion.div>
         )}
       </AnimatePresence>
-      {isLoaded && (
+      {isLoaded && <VideoComponent />}
+
+      {/* {isLoaded && (
         <motion.video
           className={css.video}
           initial={{ opacity: 0 }}
@@ -183,9 +185,37 @@ export default function Home() {
           autoPlay
           muted
           loop
+          playsInline
           src="/video/IMG_7064.mov"
+          id="preview"
         />
-      )}
+      )} */}
     </motion.div>
   );
 }
+
+const VideoComponent = () => {
+  const videoHTML = `
+      <video
+        class=${css.video}
+        autoPlay
+        playsInline
+        muted
+        loop
+      >
+        <source src="/video/IMG_7064.mov" type="video/mp4" />
+      </video>
+  `;
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        zIndex: 15,
+        width: "100%",
+        height: "100%",
+      }}
+      dangerouslySetInnerHTML={{ __html: videoHTML }}
+    />
+  );
+};

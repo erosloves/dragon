@@ -58,10 +58,16 @@ export default function Page({ params }) {
     getImage();
   }, [params.id]);
 
+  const titleImg = slideImage.filter((el) => {
+    if (el.slice(38) == "title.jpg") {
+      return el;
+    }
+  });
+
   return (
     <>
       <section className={styles.titleSection}>
-        <motion.img src={slideImage[0]} />
+        <motion.img src={titleImg} />
         <motion.h2
           variants={variantsAnimateParams}
           custom={1}
@@ -80,6 +86,9 @@ export default function Page({ params }) {
         <AnimatePresence>
           <div className={styles.imgContainer}>
             {slideImage.map((img, i) => {
+              if (img.slice(38) == "title.jpg") {
+                return;
+              }
               return (
                 <motion.figure
                   key={img}
@@ -205,9 +214,12 @@ const VerticalSplitScreen = ({
   setCCVisible,
   isCCVisible,
 }) => {
+  const viewPort = useViewPortWidth();
+
   const [isLeftSide, setIsLeftSide] = useState(true);
 
   useEffect(() => {
+    if (viewPort <= 960) return;
     const handleMouseMove = (e) => {
       const screenWidth = window.innerWidth;
       const cursorX = e.clientX;
@@ -230,6 +242,7 @@ const VerticalSplitScreen = ({
   }, []);
 
   const changeSlide = () => {
+    if (viewPort <= 960) return;
     const acc = slideImageLength % 2;
     if (isLeftSide) {
       if (slideCount > 0) {
@@ -246,30 +259,32 @@ const VerticalSplitScreen = ({
     }
   };
 
-  document.addEventListener(
-    "keydown",
-    debounce(function (event) {
-      const acc = slideImageLength % 2;
-      switch (event.key) {
-        case "ArrowLeft":
-          if (slideCount > 0) {
-            setSlideCount(slideCount - 1);
-          } else if (slideCount == 0) {
-            setSlideCount(
-              acc == 0 ? slideImageLength / 2 - 1 : slideImageLength / 2 - 0.5
-            );
-          }
-          break;
-        case "ArrowRight":
-          if (slideCount < slideImageLength / 2 - 1) {
-            setSlideCount(slideCount + 1);
-          } else setSlideCount(0);
-          break;
-        default:
-          break;
-      }
-    }, 500)
-  );
+  if (viewPort > 960) {
+    document.addEventListener(
+      "keydown",
+      debounce(function (event) {
+        const acc = slideImageLength % 2;
+        switch (event.key) {
+          case "ArrowLeft":
+            if (slideCount > 0) {
+              setSlideCount(slideCount - 1);
+            } else if (slideCount == 0) {
+              setSlideCount(
+                acc == 0 ? slideImageLength / 2 - 1 : slideImageLength / 2 - 0.5
+              );
+            }
+            break;
+          case "ArrowRight":
+            if (slideCount < slideImageLength / 2 - 1) {
+              setSlideCount(slideCount + 1);
+            } else setSlideCount(0);
+            break;
+          default:
+            break;
+        }
+      }, 500)
+    );
+  }
 
   return (
     <div
