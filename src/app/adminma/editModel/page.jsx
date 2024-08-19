@@ -1,14 +1,19 @@
 "use client";
 import css from "./page.module.css";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { NotificationContext } from "@/contexts/notification";
 import { motion } from "framer-motion";
+import { type } from "os";
 function Page() {
   const { setNotifyVisible, notifyData, setNotifyData } =
     useContext(NotificationContext);
   const [modelsData, setModelsData] = useState([]);
   const [dataForEditing, setDataForEditing] = useState([]);
+  const [titlePicture, setTitlePicture] = useState();
+  const [editorCurrentId, setEditorCurrentId] = useState();
   const [isEditorVisible, setEditorVisible] = useState(false);
+  const [isAvatarEditorVisible, setAvatarEditorVisible] = useState(false);
+
   const getModelsData = async () => {
     const req = await fetch("/api/client/getdata?type=selectAll");
     const { results } = await req.json();
@@ -17,6 +22,36 @@ function Page() {
   useEffect(() => {
     getModelsData();
   }, []);
+
+  // Получаем списко картинок, чтобы уточнить, есть ли уже title.jps
+
+  const getImagesList = async (id) => {
+    try {
+      const apiUrlEndpoint = `/api/client/getimages?id=${id}`;
+      const req = await fetch(apiUrlEndpoint);
+
+      const { results } = await req.json();
+
+      return results;
+    } catch (error) {
+      console.error(
+        "There has been a problem with your fetch operation:",
+        error
+      );
+    }
+  };
+
+  const parseImagesList = (arr) => {
+    const title = arr.filter((el) => {
+      if (el.slice(38) == "title.jpg") {
+        return el;
+      }
+    });
+
+    if (title.length > 0) {
+      return title[0];
+    }
+  };
 
   // fx
 
@@ -29,7 +64,18 @@ function Page() {
     }
   };
 
-  const editAvatar = (id) => console.log("edited");
+  const editAvatar = async (id) => {
+    const imagesList = await getImagesList(id);
+    const titlePictureState = await parseImagesList(imagesList);
+    setTitlePicture(titlePictureState);
+    setEditorCurrentId(id);
+    setAvatarEditorVisible(true);
+  };
+
+  useEffect(() => {
+    console.log(titlePicture);
+  }, [titlePicture]);
+
   const editPictures = (id) => console.log("edited");
 
   const removeModel = async (id) => {
@@ -57,14 +103,14 @@ function Page() {
                   className={css.disabled}
                   title="This function will be available soon"
                 >
-                  Edit the avatar
+                  Edit title photo
                 </div>
                 <div
                   onClick={() => editPictures(el.id)}
                   className={css.disabled}
                   title="This function will be available soon"
                 >
-                  Edit pictures
+                  Edit portfolio
                 </div>
 
                 <div onClick={() => removeModel(el.id)}>Remove the model</div>
@@ -76,6 +122,12 @@ function Page() {
         isEditorVisible={isEditorVisible}
         setEditorVisible={setEditorVisible}
         dataForEditing={dataForEditing}
+      />
+      <AvatarEditor
+        isAvatarEditorVisible={isAvatarEditorVisible}
+        setAvatarEditorVisible={setAvatarEditorVisible}
+        titlePicture={titlePicture}
+        editorCurrentId={editorCurrentId}
       />
     </div>
   );
@@ -187,6 +239,89 @@ const ParamsEditor = ({
     )
   );
 };
+// AvatarEditor
+const AvatarEditor = ({
+  isAvatarEditorVisible,
+  setAvatarEditorVisible,
+  titlePicture,
+  editorCurrentId,
+}) => {
+  const setPhoto = useRef();
+  const [file, setFile] = useState({});
+  const handleFilesChange = (e) => {
+    setFile(e.target.files);
+  };
+
+  const sendPhoto = async () => {
+    const attachedPhoto = new FormData();
+    attachedPhoto.append("file", file);
+    const reqPostImg = await fetch(
+      `/api/admin/settitlephoto?id=${editorCurrentId}`,
+      {
+        method: "POST",
+        body: attachedPhoto,
+      }
+    );
+  };
+  return (
+    isAvatarEditorVisible && (
+      <div className={css.AvatarEditorLayout}>
+        <h2>Avatar Editor</h2>
+        <div className={css.AvatarEditorWrapper}>
+          {titlePicture ? (
+            <h3>That is current avatar</h3>
+          ) : (
+            <h3>The avatar has not been set yet</h3>
+          )}
+
+          {/* buttons */}
+          <div
+            style={{
+              display: "flex",
+              width: "100%",
+              justifyContent: "center",
+              gap: "10px",
+            }}
+          >
+            <div
+              className={`${css.btn} ${css.set}`}
+              onClick={() => setPhoto.current.click()}
+            >
+              Set title photo
+            </div>
+            {/* <div className={`${css.btn} ${css.reset}`} onClick={() => {}}>
+              Reset avatar
+            </div> */}
+
+            <div
+              className={`${css.btn} ${css.save}`}
+              onClick={() => {
+                sendPhoto();
+              }}
+            >
+              Save
+            </div>
+            <div
+              className={`${css.btn} ${css.cancel}`}
+              onClick={() => setAvatarEditorVisible(false)}
+            >
+              Cancel
+            </div>
+          </div>
+          {titlePicture ? (
+            <img src={titlePicture} alt="avatar" style={{ height: "100%" }} />
+          ) : null}
+        </div>
+        <input
+          onChange={handleFilesChange}
+          type="file"
+          ref={setPhoto}
+          style={{ display: "none" }}
+        />
+      </div>
+    )
+  );
+};
 
 const SendDataToDB = async (
   id,
@@ -200,8 +335,6 @@ const SendDataToDB = async (
   hair,
   inst
 ) => {
-  // console.log(name, height, bust, waist, hip, shoes, eyes, hair, inst);
-
   const data = {};
   name ? (data.name = name) : null;
   height ? (data.height = height) : null;

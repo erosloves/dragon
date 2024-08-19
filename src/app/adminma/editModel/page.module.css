@@ -1,6 +1,5 @@
 .items {
   font-size: 22px;
-
   display: grid;
   padding: 10px;
   padding: 10px 10% 0;
@@ -11,6 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   /* width: 300px; */
 
   height: 50px;
@@ -24,13 +24,49 @@
 }
 
 .functions > * {
-  cursor: pointer;
   padding: 5px 10px;
+
+  cursor: pointer;
 }
 .functions .disabled {
-  background-color: #fff;
   cursor: not-allowed;
   color: #ddd;
+  background-color: #fff;
+}
+
+/* buttons */
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  padding: 5px 10px;
+  text-align: center;
+  color: #fff;
+  border-radius: 10px;
+}
+.btn {
+  cursor: pointer;
+  transition: all ease 300ms;
+}
+.btn.save {
+  background-color: rgb(80, 209, 80);
+}
+.btn.cancel {
+  background-color: rgb(209, 80, 80);
+}
+.btn.set {
+  background-color: rgb(224, 224, 82);
+}
+.btn.save:hover {
+  background-color: rgb(72, 251, 72);
+}
+.btn.cancel:hover {
+  background-color: rgb(251, 72, 72);
+}
+.btn.set:hover {
+  background-color: rgb(251, 251, 72);
 }
 
 /* paramsEditor */
@@ -54,18 +90,19 @@
   display: flex;
   flex-direction: column;
   width: 50%;
-  border-radius: 5px;
   padding: 30px;
+  border-radius: 5px;
   background: #eee;
   gap: 10px;
 }
 
 .ParamsEditorWrapper .item {
+  font-size: 20px;
+
   display: flex;
   justify-content: space-between;
   padding-bottom: 5px;
   border-bottom: 1px solid black;
-  font-size: 20px;
 }
 
 .ParamsEditorWrapper .item input {
@@ -73,28 +110,28 @@
   outline: none;
 }
 
-.ParamsEditorWrapper .btn {
-  padding: 5px 10px;
-  width: 80px;
-  border-radius: 10px;
+/* AvatarEditor */
+.AvatarEditorLayout {
+  position: fixed;
+  top: 100px;
+  left: 0;
   display: flex;
-  justify-content: center;
   align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: calc(100vh - 100px);
+  padding-top: 20px;
+  background-color: rgba(17, 17, 17, 0.8);
+}
+.AvatarEditorLayout * {
   color: #fff;
 }
-.ParamsEditorWrapper .btn {
-  transition: all ease 300ms;
-  cursor: pointer;
-}
-.ParamsEditorWrapper .btn.save {
-  background-color: rgb(80, 209, 80);
-}
-.ParamsEditorWrapper .btn.cancel {
-  background-color: rgb(209, 80, 80);
-}
-.ParamsEditorWrapper .btn.save:hover {
-  background-color: rgb(72, 251, 72);
-}
-.ParamsEditorWrapper .btn.cancel:hover {
-  background-color: rgb(251, 72, 72);
+.AvatarEditorWrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  height: 350px;
+  gap: 20px;
 }

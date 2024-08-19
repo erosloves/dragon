@@ -62,10 +62,7 @@ export default function CreateModel() {
     //   body: images,
     // });
 
-    if (
-      reqPostImg.ok
-      //  && reqLastId.ok
-    ) {
+    if (reqPostImg.ok) {
       // Очистка формы после отправки
       Array.from(e.target.childNodes).map((e) => (e.value = ""));
       setFiles({});

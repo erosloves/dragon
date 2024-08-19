@@ -219,7 +219,6 @@ const VerticalSplitScreen = ({
   const [isLeftSide, setIsLeftSide] = useState(true);
 
   useEffect(() => {
-    if (viewPort <= 960) return;
     const handleMouseMove = (e) => {
       const screenWidth = window.innerWidth;
       const cursorX = e.clientX;
@@ -242,20 +241,21 @@ const VerticalSplitScreen = ({
   }, []);
 
   const changeSlide = () => {
-    if (viewPort <= 960) return;
-    const acc = slideImageLength % 2;
-    if (isLeftSide) {
-      if (slideCount > 0) {
-        setSlideCount(slideCount - 1);
-      } else if (slideCount == 0) {
-        setSlideCount(
-          acc == 0 ? slideImageLength / 2 - 1 : slideImageLength / 2 - 0.5
-        );
+    if (viewPort > 960) {
+      const acc = slideImageLength % 2;
+      if (isLeftSide) {
+        if (slideCount > 0) {
+          setSlideCount(slideCount - 1);
+        } else if (slideCount == 0) {
+          setSlideCount(
+            acc == 0 ? slideImageLength / 2 - 1 : slideImageLength / 2 - 0.5
+          );
+        }
+      } else if (!isLeftSide) {
+        if (slideCount < slideImageLength / 2 - 1) {
+          setSlideCount(slideCount + 1);
+        } else setSlideCount(0);
       }
-    } else if (!isLeftSide) {
-      if (slideCount < slideImageLength / 2 - 1) {
-        setSlideCount(slideCount + 1);
-      } else setSlideCount(0);
     }
   };
 

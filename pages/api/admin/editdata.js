@@ -23,7 +23,7 @@ export default async function handler(req, res) {
   };
   const { id, action } = req.query;
 
-  if (action == "params") {
+  if (action == "params" || action == "remove") {
     try {
       const query = computeAction(action);
       const values = [id | undefined];
@@ -35,6 +35,7 @@ export default async function handler(req, res) {
       res.status(500).json({ error: error.message });
     }
   }
+
   if (action == "editParams") {
     try {
       const body = JSON.parse(req.body);
