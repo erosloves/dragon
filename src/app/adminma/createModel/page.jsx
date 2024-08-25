@@ -15,6 +15,7 @@ export default function CreateModel() {
   const [inst, setInst] = useState("");
   const [files, setFiles] = useState({});
   const [previewUrls, setPreviewUrls] = useState([]);
+
   const uploadImages = useRef();
 
   const { setNotifyVisible, setNotifyData } = useContext(NotificationContext);

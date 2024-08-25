@@ -100,18 +100,18 @@ function Page() {
                 <div onClick={() => editParams(el.id)}>Edit params</div>
                 <div
                   onClick={() => editAvatar(el.id)}
-                  className={css.disabled}
+                  // className={css.disabled}
                   title="This function will be available soon"
                 >
                   Edit title photo
                 </div>
-                <div
+                {/* <div
                   onClick={() => editPictures(el.id)}
                   className={css.disabled}
                   title="This function will be available soon"
                 >
                   Edit portfolio
-                </div>
+                </div> */}
 
                 <div onClick={() => removeModel(el.id)}>Remove the model</div>
               </div>
@@ -249,7 +249,7 @@ const AvatarEditor = ({
   const setPhoto = useRef();
   const [file, setFile] = useState({});
   const handleFilesChange = (e) => {
-    setFile(e.target.files);
+    setFile(e.target.files[0]);
   };
 
   const sendPhoto = async () => {
@@ -262,6 +262,7 @@ const AvatarEditor = ({
         body: attachedPhoto,
       }
     );
+    console.log(reqPostImg.status);
   };
   return (
     isAvatarEditorVisible && (
@@ -269,7 +270,7 @@ const AvatarEditor = ({
         <h2>Avatar Editor</h2>
         <div className={css.AvatarEditorWrapper}>
           {titlePicture ? (
-            <h3>That is current avatar</h3>
+            <h3>That is the current avatar</h3>
           ) : (
             <h3>The avatar has not been set yet</h3>
           )}
@@ -297,6 +298,7 @@ const AvatarEditor = ({
               className={`${css.btn} ${css.save}`}
               onClick={() => {
                 sendPhoto();
+                // setAvatarEditorVisible(false);
               }}
             >
               Save
