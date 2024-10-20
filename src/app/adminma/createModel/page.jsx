@@ -34,7 +34,7 @@ export default function CreateModel() {
       inst,
     };
     // Отпрака данных модели в БД
-    const dbConnection = await fetch("/api/admin/postdata", {
+    await fetch("/api/admin/postdata", {
       method: "POST",
       body: JSON.stringify(data),
     });
@@ -51,6 +51,7 @@ export default function CreateModel() {
 
     // // Чтобы потом, используя lastId отправить фотографии по указанному адресу
     const reqPostImg = await fetch(
+      // ЗДЕСЬ ДОБАВИТЬ ЗАГОЛОВКИ В ЦЕЛЯХ БЕЗОПАСНОСТИ
       `/api/admin/postimages?name=${name}&id=${lastId}`,
       {
         method: "POST",
