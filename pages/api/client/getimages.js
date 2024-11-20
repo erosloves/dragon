@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   const response = await fetch(`${process.env.STORAGE_URL}?id=${id}`);
 
   const files = await response.json();
-  console.log(files);
+  // console.log(files);
 
   res.status(200).json({ results: files });
 }
