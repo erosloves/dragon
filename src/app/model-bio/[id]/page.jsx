@@ -86,8 +86,8 @@ export default function Page({ params }) {
       >
         <AnimatePresence>
           <div className={styles.imgContainer}>
-            {slideImage.map((img, i) => {
-              if (img.slice(38) == "title.jpg") {
+            {slideImage.map((img) => {
+              if (img.slice(-9).toLowerCase() == "title.jpg") {
                 return;
               }
               return (
