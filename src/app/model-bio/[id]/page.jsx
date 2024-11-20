@@ -59,7 +59,7 @@ export default function Page({ params }) {
   }, [params.id]);
 
   const titleImg = slideImage.filter((el) => {
-    if (el.slice(38) == "title.jpg") {
+    if (el.slice(-9).toLowerCase() == "title.jpg") {
       return el;
     }
   });
@@ -68,6 +68,7 @@ export default function Page({ params }) {
     <>
       <section className={styles.titleSection}>
         <motion.img src={titleImg} />
+
         <motion.h2
           variants={variantsAnimateParams}
           custom={1}

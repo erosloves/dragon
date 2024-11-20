@@ -5,6 +5,9 @@ dotenv.config();
 export default async function handler(req, res) {
   const { id } = req.query;
   const response = await fetch(`${process.env.STORAGE_URL}?id=${id}`);
+
   const files = await response.json();
+  console.log(files);
+
   res.status(200).json({ results: files });
 }

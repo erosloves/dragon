@@ -38,3 +38,4 @@ next-env.d.ts
 #files
 public/models
 var
+dragon_ssl.crt
