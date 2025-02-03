@@ -1,24 +1,31 @@
 "use client";
 import styles from "./page.module.css";
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import useViewPortWidth from "@/hooks/useViewPortWidth";
 import { AnimatePresence, motion } from "framer-motion";
-import { use } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Keyboard } from "swiper/modules";
-import "swiper/css";
-import Image from "next/image";
+
+const variantsAnimateParams = {
+  hidden: {
+    opacity: 0,
+    y: 10,
+  },
+  visible: (custom) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: custom * 0.2 },
+  }),
+};
 
 export default function Page({ params }) {
   const [modelData, setModelData] = useState([]);
   const [slideImage, setSlideImage] = useState([]);
   const [dataIsLoaded, setDataIsLoaded] = useState(false);
-
-  const { id } = use(params);
+  const [slideCount, setSlideCount] = useState(0);
+  const [isCCVisible, setCCVisible] = useState(false);
 
   useEffect(() => {
     const getModel = async () => {
-      const apiUrlEndpoint = `/api/client/getdata?type=selectById&id=${id}`;
+      const apiUrlEndpoint = `/api/client/getdata?type=selectById&id=${params.id}`;
       const req = await fetch(apiUrlEndpoint);
       const { results } = await req.json();
       setModelData(results[0]);
@@ -26,12 +33,12 @@ export default function Page({ params }) {
     };
 
     getModel();
-  }, [id]);
+  }, [params.id]);
 
   useEffect(() => {
     const getImage = async () => {
       try {
-        const apiUrlEndpoint = `/api/client/getimages?id=${id}`;
+        const apiUrlEndpoint = `/api/client/getimages?id=${params.id}`;
         const req = await fetch(apiUrlEndpoint);
 
         if (!req.ok) {
@@ -49,25 +56,13 @@ export default function Page({ params }) {
     };
 
     getImage();
-  }, [id]);
+  }, [params.id]);
 
   const titleImg = slideImage.filter((el) => {
     if (el.slice(-9).toLowerCase() == "title.jpg") {
       return el;
     }
   });
-
-  const variantsAnimateParams = {
-    hidden: {
-      opacity: 0,
-      y: 10,
-    },
-    visible: (custom) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: custom * 0.2 },
-    }),
-  };
 
   return (
     <>
@@ -82,8 +77,45 @@ export default function Page({ params }) {
           {modelData.name}
         </motion.h2>
       </section>
-
-      <Gallery props={{ slideImage }} />
+      <VerticalSplitScreen
+        slideCount={slideCount}
+        setSlideCount={setSlideCount}
+        slideImageLength={slideImage.length}
+        setCCVisible={setCCVisible}
+        isCCVisible={isCCVisible}
+      >
+        <AnimatePresence>
+          <div className={styles.imgContainer}>
+            {slideImage.map((img) => {
+              if (img.slice(-9).toLowerCase() == "title.jpg") {
+                return;
+              } else
+                return (
+                  <motion.figure
+                    key={img}
+                    className={styles.imgWrapper}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    style={{
+                      transform: `translateX(calc(-${slideCount * 200}% - ${
+                        slideCount * 10
+                      }px))`,
+                    }}
+                  >
+                    <motion.img
+                      src={img}
+                      alt={img}
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ duration: 1 }}
+                      className={styles.img}
+                    />
+                  </motion.figure>
+                );
+            })}
+          </div>
+        </AnimatePresence>
+      </VerticalSplitScreen>
 
       <AnimatePresence>
         {dataIsLoaded && (
@@ -174,182 +206,111 @@ export default function Page({ params }) {
     </>
   );
 }
-// new commit
 
-const Gallery = ({ props }) => {
-  const { slideImage } = props;
-  const [isCCVisible, setCCVisible] = useState(false);
-  const [isLeftSide, setIsLeftSide] = useState(true);
-  const [swiperInstance, setSwiperInstance] = useState(null);
+const VerticalSplitScreen = ({
+  children,
+  slideCount,
+  setSlideCount,
+  slideImageLength,
+  setCCVisible,
+  isCCVisible,
+}) => {
   const viewPort = useViewPortWidth();
 
-  const swiperWrapperStyle = {
-    width: "80%",
-    height: "calc(100vh - 160px)",
-  };
-  const swiperSlideStyle = {
-    display: "flex",
-    justifyContent: "center",
-    height: "100%",
-    gap: "5px",
-  };
-  const imgStyle = {
-    objectFit: "cover",
-    width: "40%",
-    height: "100%",
-  };
-  const imgStyleMobile = {
-    objectFit: "cover",
-    width: "100%",
-    // height: "100%",
+  const [isLeftSide, setIsLeftSide] = useState(true);
 
-    padding: "0 10px 10px 10px",
-  };
-  const controllerStyle = {
-    position: "absolute",
-    left: 0,
-    top: 0,
-    height: "100%",
-    width: "100%",
-    zIndex: 10,
-    display: "flex",
-    flexWrap: "nowrap",
-  };
-  const controllerStyleItem = {
-    height: "100%",
-    width: "100%",
-  };
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const screenWidth = window.innerWidth;
+      const cursorX = e.clientX;
 
-  const switchSlide = (side) => {
-    if (side) {
-      (swiperInstance.activeIndex === 0 &&
-        swiperInstance.slideTo(swiperInstance.slides.length - 1, 3000)) ||
-        swiperInstance.slideTo(swiperInstance.activeIndex - 1, 1000);
-    }
-    if (!side) {
-      (swiperInstance.activeIndex === swiperInstance.slides.length - 1 &&
-        swiperInstance.slideTo(0, 3000)) ||
-        swiperInstance.slideTo(swiperInstance.activeIndex + 1, 1000);
-    }
+      // Устанавливаем состояние в зависимости от положения курсора
+      if (cursorX < screenWidth / 2) {
+        setIsLeftSide(true);
+      } else {
+        setIsLeftSide(false);
+      }
+    };
+
+    // Добавляем обработчик события mousemove
+    window.addEventListener("mousemove", handleMouseMove);
+
+    // Убираем обработчик события при размонтировании компонента
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  const changeSlide = () => {
+    if (viewPort > 960) {
+      const acc = slideImageLength % 2;
+      if (isLeftSide) {
+        if (slideCount > 0) {
+          setSlideCount(slideCount - 1);
+        } else if (slideCount == 0) {
+          setSlideCount(
+            acc == 0 ? slideImageLength / 2 - 1 : slideImageLength / 2 - 0.5
+          );
+        }
+      } else if (!isLeftSide) {
+        if (slideCount < slideImageLength / 2 - 1) {
+          setSlideCount(slideCount + 1);
+        } else setSlideCount(0);
+      }
+    } else return;
   };
 
-  useKeyPress((event) => {
-    switch (event.key) {
-      case "ArrowLeft":
-        switchSlide(true);
-        break;
-      case "ArrowRight":
-        switchSlide(false);
-        break;
-
-      default:
-        break;
-    }
-  });
-
-  if (viewPort <= 960)
-    return (
-      <AnimatePresence>
-        {slideImage.map((src, index) => {
-          if (!(src.slice(-9).toLowerCase() == "title.jpg")) {
-            return (
-              <motion.img
-                src={src}
-                alt={src}
-                style={imgStyleMobile}
-                key={index}
-                initial={{ opacity: 0, y: 5 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.3 }}
-              />
-            );
-          }
-        })}
-      </AnimatePresence>
-    );
-  if (viewPort > 960)
-    return (
-      <div
-        onMouseEnter={() => setCCVisible(true)}
-        onMouseLeave={() => setCCVisible(false)}
-        style={{
-          width: "100%",
-          height: "100%",
-          cursor: "none",
-          position: "relative",
-        }}
-        onClick={() => {
-          switchSlide(isLeftSide);
-        }}
-      >
-        <div style={controllerStyle}>
-          <div
-            onMouseEnter={() => {
-              setIsLeftSide(true);
-            }}
-            style={controllerStyleItem}
-          ></div>
-          <div
-            onMouseEnter={() => {
-              setIsLeftSide(false);
-            }}
-            style={controllerStyleItem}
-          ></div>
-        </div>
-        <Swiper
-          slidesPerView={1}
-          allowTouchMove={0}
-          style={swiperWrapperStyle}
-          onSwiper={setSwiperInstance}
-        >
-          <CustomCursor props={{ isCCVisible, isLeftSide, viewPort }} />
-          {slideImage.map((src, index, arr) => {
-            if (
-              !(src.slice(-9).toLowerCase() == "title.jpg") &&
-              index % 2 === 0
-            ) {
-              return (
-                <SwiperSlide key={index} style={swiperSlideStyle}>
-                  <Image
-                    src={arr[index] || null}
-                    alt={arr[index]}
-                    width={500}
-                    height={500}
-                    style={imgStyle}
-                  />
-                  <Image
-                    src={arr[index + 1] || null}
-                    alt={arr[index + 1]}
-                    width={500}
-                    height={500}
-                    style={imgStyle}
-                  />
-                </SwiperSlide>
+  if (viewPort > 960) {
+    document.addEventListener(
+      "keydown",
+      debounce(function (event) {
+        const acc = slideImageLength % 2;
+        switch (event.key) {
+          case "ArrowLeft":
+            if (slideCount > 0) {
+              setSlideCount(slideCount - 1);
+            } else if (slideCount == 0) {
+              setSlideCount(
+                acc == 0 ? slideImageLength / 2 - 1 : slideImageLength / 2 - 0.5
               );
             }
-          })}
-        </Swiper>
-      </div>
+            break;
+          case "ArrowRight":
+            if (slideCount < slideImageLength / 2 - 1) {
+              setSlideCount(slideCount + 1);
+            } else setSlideCount(0);
+            break;
+          default:
+            break;
+        }
+      }, 500)
     );
+  }
+
+  return (
+    <div
+      onMouseEnter={() => setCCVisible(true)}
+      onMouseLeave={() => setCCVisible(false)}
+      onClick={() => changeSlide()}
+      className={styles.VerticalSplitScreen}
+    >
+      {isCCVisible && (
+        <CustomCursor
+          isLeftSide={isLeftSide}
+          slideCount={slideCount}
+          slideImageLength={slideImageLength}
+          isCCVisible={isCCVisible}
+        />
+      )}
+      {children}
+    </div>
+  );
 };
 
-const useKeyPress = (callback) => {
+const CustomCursor = ({ isLeftSide, isCCVisible }) => {
+  const viewPort = useViewPortWidth();
   useEffect(() => {
-    const handleKeyDown = (event) => {
-      callback(event);
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [callback]);
-};
-
-const CustomCursor = ({ props }) => {
-  const { isLeftSide, isCCVisible, viewPort } = props;
-
-  useEffect(() => {
+    if (viewPort <= 960) return;
     if (!isCCVisible) return;
     const cursor = document.getElementById("custom-cursor");
 
@@ -363,7 +324,6 @@ const CustomCursor = ({ props }) => {
       document.removeEventListener("mousemove", handleMouseMove);
     };
   }, [isCCVisible, viewPort]);
-
   const polylineStroke = () => {
     if (isLeftSide) {
       return "#000";
@@ -401,3 +361,16 @@ const CustomCursor = ({ props }) => {
     )
   );
 };
+
+// Функция дебаунсинга
+function debounce(func, delay) {
+  let timeoutId;
+  return function (...args) {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+}

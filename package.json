@@ -19,13 +19,13 @@
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.10.0",
     "net": "^1.0.2",
-    "next": "^13.5.6",
+    "next": "^15.1.6",
     "next-cloudinary": "^6.6.2",
     "next-connect": "^1.0.0",
     "react": "^18",
     "react-dom": "^18",
     "sharp": "^0.32.6",
-    "swiper": "^11.1.4",
+    "swiper": "^11.2.1",
     "tls": "^0.0.1"
   },
   "devDependencies": {
