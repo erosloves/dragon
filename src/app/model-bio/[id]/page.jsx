@@ -162,8 +162,6 @@ export default function Page({ params }) {
               className={styles.paramType}
               style={{ position: "relative", zIndex: 16 }}
               href={`https://www.instagram.com/${modelData.inst}`}
-              onHoverStart={() => setCCVisible(false)}
-              onHoverEnd={() => setCCVisible(true)}
             >
               inst:&nbsp;
               <span className={styles.paramValue}>&nbsp;{modelData.inst}</span>

@@ -37,9 +37,9 @@ const Header = ({}) => {
                 <defs>
                   <style type="text/css">
                     {`
-          .str1 {stroke:#2B2B2A;stroke-width:0.8;stroke-miterlimit:22.9256}
-          .str2 {stroke:#2B2B2A;stroke-width:0.5;stroke-miterlimit:22.9256}
-          .str0 {stroke:#2B2B2A;stroke-width:0.2;stroke-miterlimit:22.9256}
+          .str1 {stroke:#2B2B2A;strokeWidth:0.8;stroke-miterlimit:22.9256}
+          .str2 {stroke:#2B2B2A;strokeWidth:0.5;stroke-miterlimit:22.9256}
+          .str0 {stroke:#2B2B2A;strokeWidth:0.2;stroke-miterlimit:22.9256}
           .fil0 {fill:#2B2B2A;fill-rule:nonzero}
         `}
                   </style>

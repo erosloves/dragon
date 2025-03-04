@@ -18,7 +18,7 @@ interface ModelData {
 
 const ModelCard = ({ name, id }: ModelData) => {
   const [isLoading, setLoading] = useState(true);
-  const [avatar, setAvatar] = useState("");
+  const [avatar, setAvatar] = useState("/");
   useEffect(() => {
     const getImages = async () => {
       const apiUrlEndpoint = `/api/client/getimages?id=${id}`;

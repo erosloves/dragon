@@ -1,7 +1,13 @@
+// pages/CreateModel.js
 "use client";
+
 import style from "./page.module.css";
-import { useRef, useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { NotificationContext } from "@/contexts/notification";
+import ImageUpload from "@/components/ImageUpload";
+
+import LoadingComponent from "@/components/LoadingComponent";
+import { AnimatePresence } from "framer-motion";
 
 export default function CreateModel() {
   const [name, setName] = useState("");
@@ -13,108 +19,117 @@ export default function CreateModel() {
   const [eyes, setEyes] = useState("");
   const [hair, setHair] = useState("");
   const [inst, setInst] = useState("");
-  const [files, setFiles] = useState({});
-  const [previewUrls, setPreviewUrls] = useState([]);
+  const [images, setImages] = useState([]); // Используем images вместо files
 
-  const uploadImages = useRef();
+  const [isLoading, setIsloading] = useState(false);
 
   const { setNotifyVisible, setNotifyData } = useContext(NotificationContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsloading(true);
+    const numericFields = { height, bust, waist, hip, shoes };
+    for (const [field, value] of Object.entries(numericFields)) {
+      if (value === "" || isNaN(Number(value))) {
+        setNotifyVisible(true);
+        setNotifyData({
+          text: `Поле ${field} должно быть числом`,
+          status: "error",
+        });
+        return;
+      }
+    }
+
+    const reqLastId = await fetch(`/api/client/getdata?type=lastId`);
+    const { results } = await reqLastId.json();
+    let { lastId } = results[0];
+
     const data = {
+      lastId,
       name,
-      height,
-      bust,
-      waist,
-      hip,
-      shoes,
+      height: Number(height),
+      bust: Number(bust),
+      waist: Number(waist),
+      hip: Number(hip),
+      shoes: Number(shoes),
       eyes,
       hair,
       inst,
     };
-    // Отпрака данных модели в БД
-    await fetch("/api/admin/postdata", {
+
+    const sendPostData = await fetch("/api/admin/postdata", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(data),
     });
 
-    // Здесь мы получаем id последней модели в БД
-    const reqLastId = await fetch(`/api/client/getdata?type=lastId`);
-    const { results } = await reqLastId.json();
-    let { lastId } = results[0];
-    // Отправка изображений
-    const images = new FormData();
-    Object.values(files).forEach((file) => {
-      images.append("files", file);
+    if (images.length === 0) {
+      setNotifyVisible(true);
+      setNotifyData({ text: "Не выбраны файлы для загрузки", status: "error" });
+      setIsloading(false);
+      return;
+    }
+
+    const formData = new FormData();
+    images.forEach((image, index) => {
+      const fileExtension = image.file.name.split(".").pop();
+      const newFileName = `${index + 1}.${fileExtension}`;
+      const renamedFile = new File([image.file], newFileName, {
+        type: image.file.type,
+      });
+      formData.append("files", renamedFile);
     });
 
-    // // Чтобы потом, используя lastId отправить фотографии по указанному адресу
     const reqPostImg = await fetch(
-      // ЗДЕСЬ ДОБАВИТЬ ЗАГОЛОВКИ В ЦЕЛЯХ БЕЗОПАСНОСТИ
-      `/api/admin/postimages?name=${name}&id=${lastId}`,
+      `/api/admin/postimages?name=${encodeURIComponent(name)}&id=${lastId}`,
       {
         method: "POST",
-        body: images,
+        body: formData,
       }
     );
     const { message } = await reqPostImg.json();
-    // const reqPostImg = await fetch(`/api/admin/postimages?id=${lastId}`, {
-    //   method: "POST",
-    //   body: images,
-    // });
 
-    if (reqPostImg.ok) {
-      // Очистка формы после отправки
-      Array.from(e.target.childNodes).map((e) => (e.value = ""));
-      setFiles({});
+    if (sendPostData.ok && reqPostImg.ok) {
+      // Очистка после успешной отправки
+      Array.from(e.target.childNodes).forEach((node) => {
+        if (node.tagName === "INPUT") node.value = "";
+      });
+      setName("");
+      setHeight("");
+      setBust("");
+      setWaist("");
+      setHip("");
+      setShoes("");
+      setEyes("");
+      setHair("");
+      setInst("");
+      setImages([]); // Очищаем изображения только после успеха
       setNotifyVisible(true);
       setNotifyData({ text: message, status: "ok" });
+      setIsloading(false);
     } else {
-      setNotifyData({ text: message, status: "error" });
+      setNotifyVisible(true);
+      setNotifyData({
+        text: message || "Ошибка отправки данных",
+        status: "error",
+      });
+      setIsloading(false);
     }
   };
-  // Добавление изображений из формы в объект для отправки на сервер
-  const mergeObjectsWithNumericKeys = (obj1, obj2) => {
-    const merged = {};
 
-    const addToMerged = (obj) => {
-      Object.entries(obj).forEach(([key, value]) => {
-        if (merged[key] !== undefined) {
-          let uniqueKey = parseInt(key, 10);
-          while (merged[uniqueKey] !== undefined) {
-            uniqueKey++;
-          }
-          merged[uniqueKey] = value;
-        } else {
-          merged[key] = value;
-        }
-      });
-    };
-
-    addToMerged(obj1);
-    addToMerged(obj2);
-
-    return merged;
+  const handleImagesChange = (newImages) => {
+    console.log(
+      "Received images from ImageUpload:",
+      newImages.map((img) => img.file.name)
+    );
+    setImages(newImages);
   };
-
-  const handleFilesChange = (e) => {
-    const mergedObj = mergeObjectsWithNumericKeys(e.target.files, files);
-    setFiles(mergedObj);
-  };
-
-  // Предпросмотр изображений
-
-  useEffect(() => {
-    if (files.length === 0) return;
-    const selectedPrewievUrls = Object.values(files).map((file) => {
-      return URL.createObjectURL(file);
-    });
-    setPreviewUrls(selectedPrewievUrls);
-  }, [files]);
 
   return (
     <div className={style.datawrapper}>
+      <AnimatePresence>{isLoading && <LoadingComponent />}</AnimatePresence>
       <form className={style.inputwrapper} onSubmit={handleSubmit}>
         <input
           onChange={(e) => setName(e.target.value)}
@@ -122,41 +137,47 @@ export default function CreateModel() {
           required
           placeholder="name"
           type="text"
+          value={name}
         />
         <input
           onChange={(e) => setHeight(e.target.value)}
           name="height"
           required
           placeholder="height"
-          type="text"
+          type="number"
+          value={height}
         />
         <input
           onChange={(e) => setBust(e.target.value)}
           name="bust"
           required
           placeholder="bust"
-          type="text"
+          type="number"
+          value={bust}
         />
         <input
           onChange={(e) => setWaist(e.target.value)}
           name="waist"
           required
           placeholder="waist"
-          type="text"
+          type="number"
+          value={waist}
         />
         <input
           onChange={(e) => setHip(e.target.value)}
           name="hip"
           required
           placeholder="hip"
-          type="text"
+          type="number"
+          value={hip}
         />
         <input
           onChange={(e) => setShoes(e.target.value)}
           name="shoes"
           required
           placeholder="shoes"
-          type="text"
+          type="number"
+          value={shoes}
         />
         <input
           onChange={(e) => setEyes(e.target.value)}
@@ -164,6 +185,7 @@ export default function CreateModel() {
           required
           placeholder="eyes"
           type="text"
+          value={eyes}
         />
         <input
           onChange={(e) => setHair(e.target.value)}
@@ -171,6 +193,7 @@ export default function CreateModel() {
           required
           placeholder="hair"
           type="text"
+          value={hair}
         />
         <input
           onChange={(e) => setInst(e.target.value)}
@@ -178,29 +201,14 @@ export default function CreateModel() {
           required
           placeholder="inst"
           type="text"
+          value={inst}
         />
-        <button type="submit">send</button>
+        <button className={style.sendButton} type="submit">
+          send
+        </button>
       </form>
       <div className={style.postimageswrapper}>
-        <input
-          multiple
-          onChange={handleFilesChange}
-          type="file"
-          ref={uploadImages}
-        />
-        <button onClick={() => uploadImages.current.click()}>
-          upload images
-        </button>
-
-        {previewUrls.length > 0 && (
-          <div className={style.imageswrapper}>
-            {previewUrls.map((url, index) => (
-              <div className={style.imageswrapper__item} key={index}>
-                <img src={url} alt={index} />
-              </div>
-            ))}
-          </div>
-        )}
+        <ImageUpload onImagesChange={handleImagesChange} images={images} />
       </div>
     </div>
   );

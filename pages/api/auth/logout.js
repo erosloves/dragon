@@ -1,12 +1,14 @@
-// pages/api/auth/logout.js
-import { handleLogout } from "@auth0/nextjs-auth0";
+import { serialize } from "cookie";
 
-export default async function logout(req, res) {
-  try {
-    await handleLogout(req, res, {
-      returnTo: req.query.returnTo || "/models",
-    });
-  } catch (error) {
-    res.status(error.status || 400).end(error.message);
-  }
+export default function handler(req, res) {
+  res.setHeader(
+    "Set-Cookie",
+    serialize("auth_token", "", {
+      httpOnly: true,
+      maxAge: -1,
+      path: "/",
+    })
+  );
+
+  return res.status(200).json({ message: "Выход выполнен" });
 }

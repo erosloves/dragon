@@ -45,6 +45,8 @@ h2.paramType {
 
 .titleSection img {
   object-fit: cover;
+  width: 100%;
+  height: 100%;
 }
 
 .titleSection h2 {

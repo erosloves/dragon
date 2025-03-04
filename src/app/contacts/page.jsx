@@ -37,7 +37,7 @@ function Contacts() {
           </Link>
         </div>
         <div className={css.contactItem}>
-          <Link href="mailto:agency@thedragonmm.com">
+          <Link href="mailto:pavel@thedragonmm.com">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -46,7 +46,7 @@ function Contacts() {
               <path
                 d="M4 7.00005L10.2 11.65C11.2667 12.45 12.7333 12.45 13.8 11.65L20 7"
                 stroke="#000000"
-                stroke-width="2"
+                strokeWidth="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
@@ -57,11 +57,11 @@ function Contacts() {
                 height="14"
                 rx="2"
                 stroke="#000000"
-                stroke-width="2"
+                strokeWidth="2"
                 stroke-linecap="round"
               />
             </svg>
-            agency@thedragonmm.com
+            pavel@thedragonmm.com
           </Link>
         </div>
       </div>

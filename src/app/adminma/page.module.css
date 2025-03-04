@@ -4,6 +4,12 @@
   padding: 0 20px;
 }
 
+.wrapper_item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .wrapper h2 {
   font-size: 40px;
   margin-bottom: 20px;
@@ -17,4 +23,13 @@
 .link:hover {
   color: #fff;
   background-color: #999;
+}
+
+.btnWrapper {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
