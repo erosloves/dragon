@@ -3,18 +3,18 @@ import styles from "./page.module.css";
 import React, { useState, useEffect, useRef } from "react";
 import useViewPortWidth from "@/hooks/useViewPortWidth";
 import { AnimatePresence, motion } from "framer-motion";
-import { use } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Keyboard } from "swiper/modules";
+
 import "swiper/css";
 import Image from "next/image";
+import { Spin } from "antd";
 
 export default function Page({ params }) {
   const [modelData, setModelData] = useState([]);
   const [slideImage, setSlideImage] = useState([]);
   const [dataIsLoaded, setDataIsLoaded] = useState(false);
 
-  const { id } = use(params);
+  const { id } = params;
 
   useEffect(() => {
     const getModel = async () => {
@@ -72,17 +72,21 @@ export default function Page({ params }) {
   return (
     <>
       <section className={styles.titleSection}>
-        <motion.img src={titleImg} />
-
-        <motion.h2
-          variants={variantsAnimateParams}
-          custom={1}
-          className={styles.paramType}
-        >
-          {modelData.name}
-        </motion.h2>
+        {!dataIsLoaded ? (
+          <Spin size="large" />
+        ) : (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <motion.img src={titleImg} />
+            <motion.h2
+              variants={variantsAnimateParams}
+              custom={1}
+              className={styles.paramType}
+            >
+              {modelData.name}
+            </motion.h2>
+          </motion.div>
+        )}
       </section>
-
       <Gallery props={{ slideImage }} />
 
       <AnimatePresence>

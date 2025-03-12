@@ -39,3 +39,11 @@ next-env.d.ts
 public/models
 var
 dragon_ssl.crt
+.env
+.eslintrc.json
+.csscomb.json
+.gitignore
+
+# dir
+.vscode
+

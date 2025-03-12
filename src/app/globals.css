@@ -1,11 +1,10 @@
-@import "./fonts.css";
-* {
-  font-family: "NeueHaasDisplayThin", sans-serif;
+@import url("./fonts.css");
 
+* {
+  font-family: NeueHaasDisplayThin, sans-serif;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-
   color: black;
 }
 
@@ -28,9 +27,9 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
-
   width: 100%;
 }
+
 a {
   text-decoration: none;
 }
@@ -42,28 +41,24 @@ li {
 h1 {
   position: absolute;
   z-index: 99;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 100vw;
   height: 100px;
-
   color: black;
   background: #eee;
 }
 
 /*  antd */
 .ant-spin-dot-item {
-  color: rgb(255, 255, 255);
-  box-shadow: 0 0 5px 2px rgb(21, 21, 21);
+  color: rgb(255 255 255);
+  box-shadow: 0 0 5px 2px rgb(21 21 21);
 }
 
 #custom-cursor {
   position: fixed;
   z-index: 9999; /* Поверх всех элементов */
-
   transform: translate(-50%, -50%);
   pointer-events: none;
 }

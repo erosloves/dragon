@@ -17,6 +17,8 @@ export default async function handler(req, res) {
         return "SELECT * FROM models";
       case "selectById":
         return "SELECT * FROM models WHERE id = ?";
+      case "selectByInst":
+        return "SELECT * FROM models WHERE inst = ?";
       case "lastId":
         return "SELECT MAX(id) AS lastId FROM models";
       case "nameById":

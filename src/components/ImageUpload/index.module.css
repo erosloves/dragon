@@ -1,6 +1,6 @@
 /* index.module.css */
 .dropzone {
-  border: 2px dashed #cccccc;
+  border: 2px dashed #ccc;
   border-radius: 4px;
   padding: 20px;
   text-align: center;
@@ -38,7 +38,7 @@
 .imageContainerDragging {
   opacity: 0.6;
   transform: scale(1.05) translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 12px rgb(0 0 0 / 15%);
 }
 
 .image {
@@ -55,7 +55,6 @@
   right: 5px;
   width: 20px;
   height: 20px;
-
   color: white;
   border: none;
   border-radius: 50%;

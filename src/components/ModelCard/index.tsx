@@ -1,4 +1,4 @@
-import styles from "./ModelCard.module.css";
+import styles from "./index.module.css";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -14,6 +14,7 @@ interface ModelData {
   shoes: number;
   eyes: string;
   hair: string;
+  inst: string;
 }
 
 const ModelCard = ({ name, id }: ModelData) => {

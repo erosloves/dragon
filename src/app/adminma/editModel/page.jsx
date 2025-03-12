@@ -13,7 +13,8 @@ function Page() {
   const [titlePicture, setTitlePicture] = useState();
   const [editorCurrentId, setEditorCurrentId] = useState();
   const [isEditorVisible, setEditorVisible] = useState(false);
-  const [isAvatarEditorVisible, setAvatarEditorVisible] = useState(false);
+  const [isPhotosEditorVisible, setTitlePhotoEditorVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getModelsData = async () => {
     try {
@@ -23,6 +24,7 @@ function Page() {
       }
       const { results } = await req.json();
       setModelsData(Array.isArray(results) ? results : []);
+      setIsLoading(false);
     } catch (error) {
       setModelsData([]); // Устанавливаем пустой массив в случае ошибки
       setNotifyVisible(true);
@@ -50,15 +52,19 @@ function Page() {
         throw new Error(`Ошибка загрузки изображений: ${req.status}`);
       }
       const { results } = await req.json();
+
+      setIsLoading(false);
       return results;
     } catch (error) {
+      setIsLoading(false);
       return [];
     }
   };
 
   const parseImagesList = (arr) => {
-    const title = arr.filter((el) => el.slice(38) === "title.jpg");
-    return title.length > 0 ? title[0] : null;
+    let hasTitle = arr.filter((el) => el.includes("title"));
+    hasTitle = hasTitle.length > 0 ? hasTitle[0] : null;
+    return hasTitle;
   };
 
   const editParams = async (id) => {
@@ -70,17 +76,17 @@ function Page() {
     }
   };
 
-  const editAvatar = async (id) => {
+  const editTitlePhoto = async (id) => {
+    setIsLoading(true);
     const imagesList = await getImagesList(id);
     const titlePictureState = parseImagesList(imagesList);
     setTitlePicture(titlePictureState);
     setEditorCurrentId(id);
-    setAvatarEditorVisible(true);
+    setTitlePhotoEditorVisible(true);
   };
 
   const removeModel = async (id) => {
     const req = await fetch(`/api/admin/editdata?id=${id}&action=remove`);
-    const { results } = await req.json();
     if (req.ok) {
       setNotifyData({ text: "The model has just been removed" });
       setNotifyVisible(true);
@@ -91,8 +97,8 @@ function Page() {
   return (
     <div>
       <div className={css.items}>
-        <AnimatePresence mode="wait">
-          {modelsData === null ? ( // Пока данные не загружены
+        <AnimatePresence>
+          {isLoading ? ( // Пока данные не загружены
             <LoadingComponent />
           ) : Array.isArray(modelsData) && modelsData.length > 0 ? (
             modelsData.map((el, i) => (
@@ -100,7 +106,9 @@ function Page() {
                 {el.name}
                 <div className={css.functions}>
                   <div onClick={() => editParams(el.id)}>Edit params</div>
-                  <div onClick={() => editAvatar(el.id)}>Edit title photo</div>
+                  <div onClick={() => editTitlePhoto(el.id)}>
+                    Edit title photo
+                  </div>
                   <div onClick={() => removeModel(el.id)}>Remove the model</div>
                 </div>
               </div>
@@ -110,17 +118,27 @@ function Page() {
           )}
         </AnimatePresence>
       </div>
-      <ParamsEditor
-        isEditorVisible={isEditorVisible}
-        setEditorVisible={setEditorVisible}
-        dataForEditing={dataForEditing}
-      />
-      <AvatarEditor
-        isAvatarEditorVisible={isAvatarEditorVisible}
-        setAvatarEditorVisible={setAvatarEditorVisible}
-        titlePicture={titlePicture}
-        editorCurrentId={editorCurrentId}
-      />
+
+      <AnimatePresence>
+        <ParamsEditor
+          isEditorVisible={isEditorVisible}
+          setEditorVisible={setEditorVisible}
+          dataForEditing={dataForEditing}
+          setIsLoading={setIsLoading}
+        />
+      </AnimatePresence>
+      <AnimatePresence>
+        <PhotosEditor
+          isPhotosEditorVisible={isPhotosEditorVisible}
+          setTitlePhotoEditorVisible={setTitlePhotoEditorVisible}
+          setTitlePicture={setTitlePicture}
+          titlePicture={titlePicture}
+          editorCurrentId={editorCurrentId}
+          setNotifyVisible={setNotifyVisible}
+          setNotifyData={setNotifyData}
+          setIsLoading={setIsLoading}
+        />
+      </AnimatePresence>
     </div>
   );
 }
@@ -140,9 +158,25 @@ const ParamsEditor = ({
   const [hair, setHair] = useState("");
   const [inst, setInst] = useState("");
 
+  useEffect(() => {
+    const handleEscPress = (e) => {
+      if (e.key === "Escape") {
+        if (isEditorVisible) setEditorVisible(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleEscPress);
+    return () => document.removeEventListener("keydown", handleEscPress);
+  }, [isEditorVisible]);
+
   return (
     isEditorVisible && (
-      <motion.div className={css.ParamsEditorLayout}>
+      <motion.div
+        className={css.ParamsEditorLayout}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
         <div className={css.ParamsEditorWrapper}>
           {Object.entries(dataForEditing).map((el, i) => (
             <div key={i} className={css.item}>
@@ -230,11 +264,15 @@ const ParamsEditor = ({
   );
 };
 
-const AvatarEditor = ({
-  isAvatarEditorVisible,
-  setAvatarEditorVisible,
+const PhotosEditor = ({
+  isPhotosEditorVisible,
+  setTitlePhotoEditorVisible,
   titlePicture,
+  setTitlePicture,
   editorCurrentId,
+  setNotifyVisible,
+  setNotifyData,
+  setIsLoading,
 }) => {
   const setPhoto = useRef();
   const [file, setFile] = useState(null);
@@ -245,26 +283,84 @@ const AvatarEditor = ({
 
   const sendPhoto = async () => {
     if (!file) return;
-    const attachedPhoto = new FormData();
-    attachedPhoto.append("file", file);
-    const reqPostImg = await fetch(
-      `/api/admin/settitlephoto?id=${editorCurrentId}`,
-      {
+
+    try {
+      const attachedPhoto = new FormData();
+      attachedPhoto.append("photo", file); // Используем ключ "photo"
+      attachedPhoto.append("id", editorCurrentId); // Добавляем id в FormData
+
+      const reqPostImg = await fetch("/api/admin/settitlephoto", {
         method: "POST",
         body: attachedPhoto,
+      });
+
+      if (!reqPostImg.ok) {
+        throw new Error(`Server error: ${reqPostImg.status}`);
       }
-    );
+
+      const { message } = await reqPostImg.json();
+
+      setNotifyVisible(true);
+      setNotifyData({
+        text: message,
+        status: "ok",
+      });
+    } catch (error) {
+      setNotifyVisible(true);
+      setNotifyData({
+        text: "Ошибка загрузки данных моделей",
+        status: "error",
+      });
+      console.error("Upload error:", error);
+    }
+    setTitlePhotoEditorVisible(false);
+    setTitlePicture(null);
+    setFile(null);
+    setIsLoading(false);
+  };
+  const clearFile = () => {
+    setFile(null);
   };
 
+  const cancelHandler = () => {
+    clearFile();
+    setTitlePhotoEditorVisible(false);
+  };
+
+  const saveHandler = () => {
+    sendPhoto();
+    setIsLoading(true);
+  };
+
+  useEffect(() => {
+    const handleEscPress = (e) => {
+      if (e.key === "Escape") {
+        if (isPhotosEditorVisible) cancelHandler();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscPress);
+    return () => document.removeEventListener("keydown", handleEscPress);
+  }, [isPhotosEditorVisible]);
+
   return (
-    isAvatarEditorVisible && (
-      <div className={css.AvatarEditorLayout}>
+    isPhotosEditorVisible && (
+      <motion.div
+        className={css.PhotosEditorLayout}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
         <h2>Avatar Editor</h2>
-        <div className={css.AvatarEditorWrapper}>
+        <div className={css.PhotosEditorWrapper}>
           {titlePicture ? (
             <>
-              <h3>That is the current avatar</h3>
-              <img src={titlePicture} alt="avatar" style={{ height: "100%" }} />
+              <h3>That is the current title photo</h3>
+              <img
+                src={titlePicture}
+                alt="avatar"
+                className={css.currentTitlePhoto}
+              />
             </>
           ) : (
             <h3>The avatar has not been set yet</h3>
@@ -286,19 +382,28 @@ const AvatarEditor = ({
             <div
               className={`${css.btn} ${css.save}`}
               onClick={() => {
-                sendPhoto();
-                setAvatarEditorVisible(false);
+                saveHandler();
               }}
             >
               Save
             </div>
             <div
               className={`${css.btn} ${css.cancel}`}
-              onClick={() => setAvatarEditorVisible(false)}
+              onClick={() => cancelHandler()}
             >
               Cancel
             </div>
           </div>
+        </div>
+        <div className={css.previewWraper}>
+          {file && (
+            <div className={css.titleImgPreview}>
+              <img src={URL.createObjectURL(file)} alt="preview" />
+              <div className={css.deleteImg} onClick={() => clearFile(null)}>
+                🗑️
+              </div>
+            </div>
+          )}
         </div>
         <input
           onChange={handleFilesChange}
@@ -306,7 +411,7 @@ const AvatarEditor = ({
           ref={setPhoto}
           style={{ display: "none" }}
         />
-      </div>
+      </motion.div>
     )
   );
 };

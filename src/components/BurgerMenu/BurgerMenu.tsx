@@ -48,7 +48,11 @@ const BurgerMenu: React.FC = () => {
           </g>
         </svg>
       </Link> */}
-      <Link href={"https://t.me/thedragonmm_bot"} className={styles.social}>
+      <Link
+        href={"https://t.me/thedragonmm_casting_bot"}
+        className={styles.social}
+        target="_blank"
+      >
         <svg
           fill="#000000"
           width="20px"

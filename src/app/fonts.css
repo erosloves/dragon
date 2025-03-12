@@ -1,8 +1,9 @@
 @font-face {
-  font-family: "NeueHaasDisplayRoman";
+  font-family: NeueHaasDisplayRoman;
   src: url("/fonts/NeueHaasDisplayRoman.woff");
 }
+
 @font-face {
-  font-family: "NeueHaasDisplayThin";
+  font-family: NeueHaasDisplayThin;
   src: url("/fonts/NeueHaasDisplayThin.woff");
 }

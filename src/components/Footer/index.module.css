@@ -23,12 +23,15 @@ a:nth-last-of-type(1) .social {
   right: 90px;
   scale: 1.25;
 }
+
 a:nth-last-of-type(1) .social:hover {
   scale: 1.5;
 }
+
 a:nth-last-of-type(2) .social {
   right: 130px;
 }
+
 a:nth-last-of-type(2) .social:hover {
   scale: 1.2;
 }

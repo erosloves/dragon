@@ -8,6 +8,7 @@
   padding: 0 5%;
   gap: 20px;
 }
+
 .contactItem {
   font-size: 50px;
   display: flex;
@@ -17,6 +18,7 @@
   transition: 300ms all ease-in-out;
   opacity: 0.5;
 }
+
 .contactItem:hover {
   opacity: 1;
 }
@@ -26,6 +28,7 @@
   height: 35px;
   margin-right: 10px;
 }
+
 .contactItem:nth-of-type(2) > a > svg {
   width: 40px;
   height: 40px;
@@ -33,29 +36,34 @@
   transform: translate(-3px, 8px);
 }
 
-@media screen and (max-width: 683px) {
+@media screen and (width <= 683px) {
   .contactItem {
     font-size: 30px;
   }
+
   .contactItem:nth-of-type(1) > a > svg {
     width: 20px;
     height: 20px;
   }
+
   .contactItem:nth-of-type(2) > a > svg {
     width: 25px;
     height: 25px;
     transform: translate(-3px, 4px);
   }
 }
-@media screen and (max-width: 425px) {
+
+@media screen and (width <= 425px) {
   .contactItem {
     font-size: 20px;
   }
+
   .contactItem:nth-of-type(1) > a > svg {
     width: 15px;
     height: 15px;
     margin-right: 2px;
   }
+
   .contactItem:nth-of-type(2) > a > svg {
     width: 20px;
     height: 20px;

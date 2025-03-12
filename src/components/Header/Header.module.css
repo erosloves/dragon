@@ -9,6 +9,7 @@
 .ul {
   width: 100%;
 }
+
 .header {
   position: fixed;
   z-index: 15;
@@ -20,7 +21,7 @@
 }
 
 .logo {
-  font-family: "NeueHaasDisplayThin";
+  font-family: NeueHaasDisplayThin;
   font-size: 30px;
   font-weight: lighter;
   display: flex;
@@ -29,24 +30,26 @@
   height: 100%;
   letter-spacing: "8px";
 }
+
 .logo svg {
   width: 200px;
-
   transition: all ease 300ms;
-  image-rendering: optimizeQuality;
+  image-rendering: optimizequality;
 }
+
 .logo svg:hover {
   scale: 1.05;
 }
 
-@media screen and (max-width: 646px) {
+@media screen and (width <= 646px) {
   .header img {
     width: 250px;
     height: 83px;
     object-fit: cover;
   }
 }
-@media screen and (max-width: 560px) {
+
+@media screen and (width <= 560px) {
   .header img {
     width: 230px;
     height: 76px;
@@ -54,14 +57,15 @@
   }
 }
 
-@media screen and (max-width: 530px) {
+@media screen and (width <= 530px) {
   .header img {
     width: 200px;
     height: 66px;
     object-fit: cover;
   }
 }
-@media screen and (max-width: 350px) {
+
+@media screen and (width <= 350px) {
   .header img {
     width: 150px;
     height: 50px;

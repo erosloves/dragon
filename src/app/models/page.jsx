@@ -37,7 +37,7 @@ export default function Page() {
 
     getPageData();
   }, []);
-
+  console.log(dataResponse);
   return (
     <AnimatePresence>
       <div className={styles.modelcard_wrapper}>
@@ -52,7 +52,7 @@ export default function Page() {
               custom={i++}
               style={{ width: "100%" }}
             >
-              <ModelCard id={el.id} name={el.name} />
+              <ModelCard id={el.id} name={el.name} inst={el.inst} />
             </motion.div>
           );
         })}
